@@ -5,9 +5,7 @@ import { Link } from 'react-router-dom';
 const Container = styled.div`
 	width: 100vw;
 	height: 100vh;
-	background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)),
-		url('https://images.unsplash.com/photo-1611066527948-893f0aecdb79?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2832&q=80')
-			center;
+	background-image: url('https://github.com/dthanh1912/HK212_CO3109_SmartMotel/blob/main/public/resource/signin.png');
 	background-size: cover;
 	background-repeat: no-repeat;
 	display: flex;
