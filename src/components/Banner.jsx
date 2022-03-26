@@ -23,25 +23,6 @@ const Left = styled.div`
     align-items: center;
 `;
 
-const SearchContainer = styled.div`
-    display: flex;
-    background-color: #ffc890;
-    align-items: center;
-    margin-left: 30px;
-    padding: 4px;
-`;
-
-const Input = {
-    border: '0.5px solid white',
-    width: '90%'
-};
-   
-
-const Center = styled.div`
-    flex: 1;
-    text-align: center;
-`;
-
 const Logo = styled.h1`
     font-weight: bold;
     cursor: pointer;
@@ -63,52 +44,22 @@ const MenuItem = styled.div`
     ${mobile({ fontSize: "12px", marginLeft: "10px" })}
 `;
 
-const SearchButton = styled.button`
-    background-color: rgba(255, 255, 255, 0.2);
-    padding: 0.5px 8px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-`;
-
-const Banner = ({onChange}) => {
-    const { search } = window.location;
-    const query = new URLSearchParams(search).get('tenant'); // Fetched the searched item successfully
-
+const Banner = () => {
     return (
         <Container>
             <Wrapper>
                 <Left>
                     <Link style={{textDecoration: 'none'} }
-                        to="/BlankPage">
+                        to="/">
                         <Logo>EOF Smart Motel</Logo>
                     </Link>
                 </Left>
-                <Center> 
-                    <form action="/" method="get">
-                        <SearchContainer>
-                            <label htmlFor="header-search"/>
-                            <input
-                                type="text"
-                                id="header-search"
-                                placeholder="Search tenant"
-                                name="tenant"
-                                style = {Input}
-                            />
-                            <Right>
-                                <SearchButton type = "submit" onClick = {onChange(!query ? '' : query)}>
-                                    Search 
-                                </SearchButton>
-                            </Right>
-                        </SearchContainer>
-                    </form>
-                </Center>
-
                 <Right>
-                    <MenuItem onClick = {() => {window.scrollTo(0,document.body.scrollHeight);}}>ABOUT US</MenuItem>
+                    <MenuItem>Notification</MenuItem>
+                    <MenuItem>About Us</MenuItem>
+
                     <Link to="/user/cart"
-                        style={{ color: "inherit", textDecoration: "inherit" }}
-                    >
+                        style={{ color: "inherit", textDecoration: "inherit" }}>
                         <MenuItem>
                             <Badge badgeContent={0} color="primary">
                                 <PersonOutlineOutlined />

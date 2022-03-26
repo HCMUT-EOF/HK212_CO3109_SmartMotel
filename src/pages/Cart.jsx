@@ -2,8 +2,6 @@ import styled from "styled-components";
 import Footer from "../components/Footer";
 import { mobile } from "../responsive";
 import { Link } from "react-router-dom";
-import { cartArr, quanArr } from "./Home";
-import CartItem from "../components/CartItem";
 import { useState, useEffect } from "react";
 
 const Container = styled.div``;

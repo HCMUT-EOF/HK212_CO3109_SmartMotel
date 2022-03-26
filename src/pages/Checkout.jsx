@@ -2,9 +2,7 @@ import styled from "styled-components";
 import Footer from "../components/Footer";
 import { mobile } from "../responsive";
 import { Link } from "react-router-dom";
-import { cartArr, quanArr } from "./Home";
 import { useState, useEffect } from "react";
-import CheckoutItem from "../components/CheckoutItem";
 
 const Container = styled.div``;
 
@@ -87,27 +85,6 @@ const ReturnButton = styled.button`
 `;
 
 const Checkout = () => {
-  const [totalItemInCheckOut, setTotal] = useState(0);
-
-  useEffect(() => {
-    handleTotalItem();
-  },[totalItemInCheckOut]);
-
-  const handleTotalItem = () => {
-    let count = 0;
-    for (let i = 0; i < quanArr.length; i++){
-      count += quanArr[i][1];
-    }
-    setTotal(count);
-  }
-
-  const recycleCart = () => {
-    alert('Thank you for ordering!');
-    let arrLength = quanArr.length;
-    quanArr.splice(0, arrLength);
-    cartArr.splice(0, arrLength);
-  }
-
   return (
     <Container>
       <TopTexts><Link to="/">Home</Link> {'>'} <Link to="/user/cart">Cart</Link> {'>'} <Link to="/user/checkout">Place Order</Link> </TopTexts>

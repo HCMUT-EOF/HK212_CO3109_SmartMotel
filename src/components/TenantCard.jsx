@@ -8,7 +8,7 @@ const Info = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  background-color: green;
+  background-color: rgba(0, 0, 0, 0.2);
   z-index: 5;
   display: flex;
   align-items: center;
@@ -22,7 +22,6 @@ const TenantInfo = styled.div`
   width: 100%;
   height: 100%;
   position: absolute;
-  border-color: green;
   z-index: 4;
   align-items: center;
   justify-content: center;
@@ -31,30 +30,38 @@ const TenantInfo = styled.div`
 
 const Container = styled.div`
   flex: 3;
-  margin: 15px;
+  margin: 10px;
   min-width: 800px;
   height: 50px;
   display: flex;
-  border-color: green;
-  align-items: center;
-  justify-content: center;
   position: relative;
+  border: 0.5px solid black;
+  transition: all 0.5s ease;
   &:hover ${Info}{
     opacity: 1;
   }
 `;
 
+const Room = styled.div`
+  font-size: 16px;
+  margin-left: 15px;
+`
+
 const Name = styled.div`
   font-size: 22px;
+  margin-left: 15px;
   font-weight: bold;
 `
 
-const ProductCard = ({ item }) => {
+const TenantCard = ({ item }) => {
   if (item[1].Status === "In room"){
     return (
       <Container> 
+        <Info/>
         <TenantInfo style={{"background-color": "#63AA6F"}}>
+          <Room>
             Room 0{item[0].RoomID} - Current Status: {item[1].Status}
+          </Room>
           <Name>
             {item[0].Name}
           </Name> 
@@ -65,8 +72,11 @@ const ProductCard = ({ item }) => {
   else{
     return (
       <Container> 
+        <Info/>
         <TenantInfo style={{"background-color": "#FB9393"}}>
+          <Room>
             Room 0{item[0].RoomID} - Current Status: {item[1].Status}
+          </Room>
           <Name>
             {item[0].Name}
           </Name> 
@@ -77,4 +87,4 @@ const ProductCard = ({ item }) => {
   
 };
 
-export default ProductCard;
+export default TenantCard;
