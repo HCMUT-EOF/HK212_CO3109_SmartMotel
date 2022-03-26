@@ -1,7 +1,5 @@
 import styled from "styled-components";
-import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
-import BannerCart from "../components/BannerCart";
 import { mobile } from "../responsive";
 import { Link } from "react-router-dom";
 import { cartArr, quanArr } from "./Home";
@@ -108,13 +106,10 @@ const Checkout = () => {
     let arrLength = quanArr.length;
     quanArr.splice(0, arrLength);
     cartArr.splice(0, arrLength);
-    // Start the process of destroy everything
   }
 
   return (
     <Container>
-      <Announcement />
-      <BannerCart />
       <TopTexts><Link to="/">Home</Link> {'>'} <Link to="/user/cart">Cart</Link> {'>'} <Link to="/user/checkout">Place Order</Link> </TopTexts>
       <Wrapper>
         <Bottom>

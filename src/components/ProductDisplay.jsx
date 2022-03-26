@@ -1,9 +1,7 @@
 import * as React from "react";
-import { useState} from 'react';
 import styled from "styled-components";
 import { mobile } from "../responsive";
 import Products from "./Products";
-import ProductDetail from "./ProductDetail";
 
 const Container = styled.div`
     height: 80%;
@@ -23,28 +21,18 @@ const Display = styled.div`
     ${mobile({ flex: 2, justifyContent: "center" })}
 `;
 
-const ProductDisplay = ({option, onUpdateCount, value}) => {
-    const [productPicked, setProductPicked] = useState('');
-
-    const handleProductPicked = (item) => {
-        setProductPicked(item);
-    };
-
-    const showProductDetail = (
-        <ProductDetail item = {productPicked} onUpdateCount = {onUpdateCount}/>
-    );
-
+const ProductDisplay = ({value}) => {
     const showProductList = (
         <Container>
             <Display>    
-                <Products option = {option} value = {value} itemDetail = {handleProductPicked}/>
+                <Products value = {value}/>
             </Display>
         </Container>
     );
 
     return (
         <div>
-            {productPicked ? showProductDetail : showProductList}
+            {showProductList}
         </div>
     );
 };

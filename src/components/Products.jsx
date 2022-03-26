@@ -1,50 +1,43 @@
 import styled from "styled-components";
 import Product from "./ProductCard";
-import { all } from "../data";
+import { all, roomStatus } from "../data";
 import { useState, useEffect } from "react";
 
 const Container = styled.div`
     padding: 20px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
 `;
 
-const Products = ({value, option, itemDetail}) => {
+const Products = ({value}) => { 
+  // var a = all;
+  // var b = roomStatus;
+  // var c = a.map(function(e, i){
+  //   return [e, b[i]];
+  // });
+  
   const [filter, setFilter] = useState([]);
-
-  const checkFilter = (value, option) => {
-    // No need to check for searched value
-    if (value === ''){
-      if (option === 'all')
-        return all;
-      else if (option === 'Male')
-        return all.filter((item) => item["Gender"] === 'Male');
-      else
-        return all.filter((item) => item["Gender"] === 'Female');
-    }
-    // Need to check for searched value
-    else{
-      if (option === 'all')
-        return all.filter((item) => item["Name"].toLowerCase().includes(value.toLowerCase()));
-      else if (option === 'Male')
-        return all.filter((item) => item["Name"].toLowerCase().includes(value.toLowerCase()) && item["Gender"] === 'Male');
-      else
-        return all.filter((item) => item["Name"].toLowerCase().includes(value.toLowerCase()) && item["Gender"] === 'Female');
-    }
+  
+  const checkFilter = (value) => {
+    return all.filter((eachTenant) => eachTenant["Name"].toLowerCase().includes(value.toLowerCase()));
   }
 
   useEffect(() => { 
-    setFilter(checkFilter(value, option));
-  }, [value, option]);
+    setFilter(checkFilter(value));
+  }, [value]);
 
+  var b = roomStatus;
+  var c = all.map(function(e, i){
+    return [e, b[i]];
+  });
+  
   const valueList = (
-    filter? (<Container>
-      {filter.map((item) => (
-          <Product item = {item} onChange = {itemDetail}/>
+    c? (<Container>
+      {c.map((item) => (
+          <Product item = {item}/>
       ))}
     </Container>)
-    : 'Product is loading'
+    : 'Tenant info is loading'
   );
 
   return (

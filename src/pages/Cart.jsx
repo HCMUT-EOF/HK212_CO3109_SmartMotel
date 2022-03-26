@@ -1,10 +1,8 @@
 import styled from "styled-components";
-import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import { mobile } from "../responsive";
 import { Link } from "react-router-dom";
 import { cartArr, quanArr } from "./Home";
-import BannerCart from "../components/BannerCart";
 import CartItem from "../components/CartItem";
 import { useState, useEffect } from "react";
 
@@ -91,8 +89,6 @@ const Cart = () => {
 
   return (
     <Container>
-      <Announcement />
-      <BannerCart />
       <TopTexts><Link to="/">Home</Link> {'>'} <Link to="/user/cart">Cart</Link></TopTexts>
       <Wrapper>
         <Bottom>

@@ -1,10 +1,4 @@
-import {
-  FavoriteBorderOutlined,
-  SearchOutlined,
-  ShoppingCartOutlined,
-} from "@material-ui/icons";
 import styled from "styled-components";
-import { cartArr, quanArr } from "../pages/Home";
 
 const Info = styled.div`
   flex: 3;
@@ -14,7 +8,7 @@ const Info = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: green;
   z-index: 5;
   display: flex;
   align-items: center;
@@ -23,11 +17,12 @@ const Info = styled.div`
   cursor: pointer;
 `;
 
-const ItemInfo = styled.div`
+const TenantInfo = styled.div`
   opacity: 100;
   width: 100%;
   height: 100%;
   position: absolute;
+  border-color: green;
   z-index: 4;
   align-items: center;
   justify-content: center;
@@ -37,9 +32,10 @@ const ItemInfo = styled.div`
 const Container = styled.div`
   flex: 3;
   margin: 15px;
-  min-width: 280px;
-  height: 350px;
+  min-width: 800px;
+  height: 50px;
   display: flex;
+  border-color: green;
   align-items: center;
   justify-content: center;
   position: relative;
@@ -48,97 +44,37 @@ const Container = styled.div`
   }
 `;
 
-const Circle = styled.div`
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  background-color: white;
-  position: absolute;
-`;
-
-const Image = styled.img`
-  height: 65%;
-  z-index: 2;
-`;
-
-const Icon = styled.div`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 15px;
-  transition: all 0.5s ease;
-  &:hover {
-    background-color: #e9f5f5;
-    transform: scale(1.1);
-  }
-`;
-
 const Name = styled.div`
-  font-size: 14px;
+  font-size: 22px;
   font-weight: bold;
 `
 
-const Price = styled.div`
-  font-size: 12px;
-`
-const Brand = styled.div`
-  font-size: 14px;
-`
-
-const ProductCard = ({ item, onChange }) => {
-  function addtoCart(thisItem){
-    // If item is not presented in cart yet
-    var found = false;
-
-    for (var i = 0; i < cartArr.length; i++) {
-        if (cartArr[i].Name === thisItem['Name']) {
-            found = true;
-            break;
-        }
-    }
-    if (!found){
-      cartArr.push(thisItem);
-      quanArr.push([thisItem["ID"], 1]);
-      alert("Added " + thisItem['Name'] + " to the cart");
-    }
-    else
-      alert(thisItem['Name'] + " is already in the cart");
-  };
-
-  return (
-    <Container>
-      <Circle />
-      <Image src={item.Image} />
-      <ItemInfo>
-        <Brand>
-          {item.Brand}
-        </Brand>
-        <Name>
-          {item.Name}
-        </Name> 
-        <Price>
-          {item['Price range']}
-        </Price>
-      </ItemInfo> 
-      <Info>
-        <Icon onClick = {() => addtoCart(item)}>
-          <ShoppingCartOutlined/>
-        </Icon>
-
-        <Icon onClick = {() => onChange(item)}>
-            <SearchOutlined />
-        </Icon>
-        
-        <Icon onClick = {() => alert("Added to favorite")}>
-          <FavoriteBorderOutlined/>
-        </Icon> 
-      </Info>     
-    </Container>
-  );
+const ProductCard = ({ item }) => {
+  if (item[1].Status === "In room"){
+    return (
+      <Container> 
+        <TenantInfo style={{"background-color": "#63AA6F"}}>
+            Room 0{item[0].RoomID} - Current Status: {item[1].Status}
+          <Name>
+            {item[0].Name}
+          </Name> 
+        </TenantInfo>  
+      </Container>
+    );
+  }
+  else{
+    return (
+      <Container> 
+        <TenantInfo style={{"background-color": "#FB9393"}}>
+            Room 0{item[0].RoomID} - Current Status: {item[1].Status}
+          <Name>
+            {item[0].Name}
+          </Name> 
+        </TenantInfo>  
+      </Container>
+    );
+  }
+  
 };
 
 export default ProductCard;

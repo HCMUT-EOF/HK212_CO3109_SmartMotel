@@ -1,5 +1,5 @@
 import { Badge } from "@material-ui/core";
-import { ShoppingCartOutlined } from "@material-ui/icons";
+import { PersonOutlineOutlined } from "@material-ui/icons";
 import styled from "styled-components";
 import { mobile } from "../responsive";
 import { Link } from "react-router-dom";
@@ -73,7 +73,7 @@ const SearchButton = styled.button`
 
 const Banner = ({onChange}) => {
     const { search } = window.location;
-    const query = new URLSearchParams(search).get('perfume'); // Fetched the searched item successfully
+    const query = new URLSearchParams(search).get('tenant'); // Fetched the searched item successfully
 
     return (
         <Container>
@@ -81,7 +81,7 @@ const Banner = ({onChange}) => {
                 <Left>
                     <Link style={{textDecoration: 'none'} }
                         to="/BlankPage">
-                        <Logo>BKP.</Logo>
+                        <Logo>EOF Smart Motel</Logo>
                     </Link>
                 </Left>
                 <Center> 
@@ -91,12 +91,12 @@ const Banner = ({onChange}) => {
                             <input
                                 type="text"
                                 id="header-search"
-                                placeholder="Search perfume"
-                                name="perfume" 
+                                placeholder="Search tenant"
+                                name="tenant"
                                 style = {Input}
                             />
                             <Right>
-                                <SearchButton type = "submit" onClick = {onChange(!query ? '' : query)}> {/* After pressing this button, the query will already hold the searched value*/}
+                                <SearchButton type = "submit" onClick = {onChange(!query ? '' : query)}>
                                     Search 
                                 </SearchButton>
                             </Right>
@@ -106,19 +106,12 @@ const Banner = ({onChange}) => {
 
                 <Right>
                     <MenuItem onClick = {() => {window.scrollTo(0,document.body.scrollHeight);}}>ABOUT US</MenuItem>
-                    
-                    <Link to="/user/login"
-                        style={{ color: "inherit", textDecoration: "inherit" }}
-                    >
-                        <MenuItem>LOGIN</MenuItem>
-                    </Link>
-
                     <Link to="/user/cart"
                         style={{ color: "inherit", textDecoration: "inherit" }}
                     >
                         <MenuItem>
                             <Badge badgeContent={0} color="primary">
-                                <ShoppingCartOutlined />
+                                <PersonOutlineOutlined />
                             </Badge>
                         </MenuItem>
                     </Link>
