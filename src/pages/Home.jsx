@@ -7,7 +7,6 @@ const Home = () => {
     const [gender, setGender] = useState('all');
     const [searchValue, setSearchValue] = useState('');
 
-
     return (
         <div>
             <Navbar/>
