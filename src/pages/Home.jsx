@@ -1,15 +1,22 @@
 import Footer from "../components/Footer";
-import Banner from "../components/Banner";
-import TenantGrid from "../components/TenantGrid";
+import Navbar from "../components/Navbar";
+import ProductDisplay from "../components/ProductDisplay";
+import { useState } from 'react';
 
 const Home = () => {
+    const [gender, setGender] = useState('all');
+    const [searchValue, setSearchValue] = useState('');
+
     return (
         <div>
-            <Banner/>
-            <TenantGrid/>
+            <Navbar/>
+            <ProductDisplay option = {gender} value = {searchValue} /> {/* onChange success */}
             <Footer />
         </div>
     );
 };
+
+export let cartArr = [];
+export let quanArr = [];
 
 export default Home;

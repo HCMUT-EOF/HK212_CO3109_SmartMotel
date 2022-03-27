@@ -6,56 +6,65 @@ const Container = styled.div`
 	width: 100vw;
 	height: 100vh;
 	background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)),
-		url('https://images.unsplash.com/photo-1611066527948-893f0aecdb79?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2832&q=80')
-			center;
+		url('https://svgur.com/i/fbf.svg') center;
 	background-size: cover;
 	background-repeat: no-repeat;
-	display: flex;
-	align-items: center;
-	justify-content: flex-start;
 	overflow: hidden;
+	box-sizing: border-box;
 `;
 
-const Logo = styled.h1`
-	font-weight: bold;
-	text-align: center;
-	color: white;
-	text-decoration: none;
-	display: inline-block;
-	${mobile({ fontSize: '24px' })}
-`;
 const LogoContainer = styled.div`
-	display: flex;
-	justify-content: center;
-	margin-bottom: 10%;
+	position: absolute;
+	top: 8%;
+	right: 5%;
+	color: white;
+	cursor: pointer;
+`;
+const HomeIcon = styled.img`
+	width: 45px;
 `;
 const Wrapper = styled.div`
-	width: 25%;
+	width: 23%;
 	padding: 3%;
-	border-radius: 10px;
-	background: rgba(255, 255, 255, 0);
-	backdrop-filter: blur(35px);
+	border-radius: 15px;
+	background: rgba(255, 255, 255, 0.13);
+	backdrop-filter: blur(15px);
 	border: 3px solid rgba(255, 255, 255, 0.05);
 	box-shadow: 0 0 150px rgba(0, 0, 0, 0.3);
 	overflow: hidden;
-	margin-left: 15%;
+	position: absolute;
+	top: 50%;
+	right: 5%;
+	transform: translateY(-50%);
+	box-size: border-box;
 `;
 
 const Title = styled.h2`
-	font-size: 25px;
+	font-size: 32px;
 	font-weight: 700;
-	margin-bottom: 5%;
+	margin-bottom: 8%;
 	color: white;
-	letter-spacing: 1px;
+	letter-spacing: 2px;
+	margin-top: 40px;
+`;
+
+const HomeLabel = styled.h6`
+	color: white;
+	font-size: 21px;
+	font-weight: bold;
+	letter-spacing: 1.5px;
 `;
 
 const Label = styled.h6`
 	color: white;
-	font-size: 16px;
+	font-size: 17px;
 	font-weight: 500;
 	pointer-events: none;
 	display: block;
 	font-weight: 600;
+`;
+const FormWrapper = styled.div`
+	width: 100%;
 `;
 
 const Form = styled.form`
@@ -70,7 +79,7 @@ const Input = styled.input`
 	border: none;
 	outline: none;
 	font-size: 16px;
-	color: #ffffff;
+	color: white;
 	background: 0;
 	padding: 0px;
 `;
@@ -82,91 +91,98 @@ const InputContainer = styled.div`
 `;
 
 const Button = styled.button`
+	width: 100%;
 	border: 0;
 	text-decoration: none;
 	border-radius: 5px;
-	background-color: rgba(255, 255, 255, 0.2);
-	border: 1px solid rgba(255, 255, 255, 0.2);
-	color: rgba(255, 255, 255, 1);
-	font-size: 16px;
-	letter-spacing: 1px;
+	cursor: pointer;
+	font-size: 17px;
+	letter-spacing: 1.5px;
 	cursor: pointer;
 	text-transform: uppercase;
-	padding: 10px;
-	margin-bottom: 10px;
-	margin-top: 20px;
+	padding: 15px;
+	margin-bottom: 40px;
+	margin-top: 15px;
 	font-weight: bold;
-	backdrop-filter: blur(35px);
-	width: 100%;
-`;
-
-const RegisterLink = styled.a`
-	font-size: 14px;
-	text-decoration: none;
-	cursor: pointer;
-	color: rgba(255, 255, 255, 1);
-	font-weight: bold;
-	display: inline-block;
-	margin-top: 20px;
+	background-size: 300% 100%;
+	border-radius: 50px;
+	transition: 0.5s ease-in-out;
+	background-size: 200% auto;
+	color: white;
+	background-image: linear-gradient(
+		to right,
+		#000046 0%,
+		#1cb5e0 51%,
+		#000046 100%
+	);
+	box-shadow: 0 4px 15px 0 rgba(65, 132, 234, 0.4);
+	&:hover {
+		background-position: right center;
+		color: #fff;
+		text-decoration: none;
+		box-shadow: 0 0px 30px 0 rgba(65, 132, 234, 1);
+	box-sizing: border-box;
 `;
 const ForgotPassword = styled.a`
-	font-size: 14px;
+	font-size: 15px;
 	text-decoration: none;
 	cursor: pointer;
-	color: rgba(255, 255, 255, 1);
+	color: white;
 	font-weight: bold;
 	display: block;
 	float: right;
 	margin-top: 5px;
 `;
-const SignUpForm = styled.div`
-	width: 100%;
-	text-align: center;
-	color: white;
-`;
-const NormalText = styled.b`
-	color: rgba(255, 255, 255, 1);
-	font-size: 14px;
-	font-weight: normal;
-	display: inline-block;
-`;
+
 const Login = () => {
 	return (
-		<Container>
-			<Wrapper>
+		<>
+			<Container>
 				<LogoContainer>
-					<Link to="/">
-						<Logo>BKP.</Logo>
+					<Link
+						style={{
+							textDecoration: 'none',
+							display: 'flex',
+							alignItems: 'center',
+							gap: '10px',
+						}}
+						to="/">
+						<HomeIcon src="https://i.ibb.co/MSLMYGg/home-4-512.png"></HomeIcon>
+						<HomeLabel>
+							SMART <br></br> MOTEL
+						</HomeLabel>
 					</Link>
 				</LogoContainer>
-				<Title>SIGN IN</Title>
-				<Form>
-					<InputContainer>
-						<Label>Email address</Label>
-						<Input
-							type="email"
-							placeholder="Enter email"
-							autoFocus
-						/>
-					</InputContainer>
-					<InputContainer>
-						<Label>Password</Label>
-						<Input type="password" placeholder="Enter password" />
-						<ForgotPassword>Forgot password?</ForgotPassword>
-					</InputContainer>
-
-					<Link to="/">
-						<Button>Sign in</Button>
-					</Link>
-					<SignUpForm>
-						<NormalText>Not a member? &nbsp; </NormalText>
-						<Link to="/user/register">
-							<RegisterLink> Sign up now</RegisterLink>
-						</Link>
-					</SignUpForm>
-				</Form>
-			</Wrapper>
-		</Container>
+				<Wrapper>
+					<FormWrapper>
+						<Title>SIGN IN</Title>
+						<Form>
+							<InputContainer>
+								<Label>Email address</Label>
+								<Input
+									type="email"
+									placeholder="Enter email"
+									autoFocus
+								/>
+							</InputContainer>
+							<InputContainer>
+								<Label>Password</Label>
+								<Input
+									type="password"
+									placeholder="Enter password"
+								/>
+								<ForgotPassword>
+									Forgot password?
+								</ForgotPassword>
+							</InputContainer>
+							<Link to="/">
+								<Button>Sign in</Button>
+							</Link>
+						</Form>
+					</FormWrapper>
+				</Wrapper>
+			</Container>
+		</>
 	);
 };
 
