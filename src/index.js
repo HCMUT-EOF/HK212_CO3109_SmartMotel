@@ -1,23 +1,23 @@
 import ReactDOM from "react-dom";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Cart from "./pages/Cart";
-import Checkout from "./pages/Checkout";
+import Tenant from "./pages/Tenant"
+import About from "./pages/About"
+import TenantInfo from "./pages/TenantInfo"
 
 const rootElement = document.getElementById("root");
 
 ReactDOM.render(
-    <BrowserRouter>
+    <Router>
         <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/user/login" component={Login} />
-            <Route path="/user/register" component={Register} />
-            <Route path="/user/cart" component={Cart} />
-            <Route path="/user/checkout" component={Checkout} />
+            <Route path="/tenantsList" component={Tenant} />
+            <Route path="/about" component={About} />
+            <Route path="/tenantInfo/:id" component={TenantInfo} />
         </Switch>
-    </BrowserRouter>,
+    </Router>,
     rootElement
 );
