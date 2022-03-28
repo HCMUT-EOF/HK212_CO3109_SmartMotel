@@ -1,4 +1,3 @@
-import { Button } from "@material-ui/core";
 import {
     MailOutline,
     Phone,
@@ -6,6 +5,13 @@ import {
 } from "@material-ui/icons";
 import styled from "styled-components";
 import { mobile } from "../responsive";
+import { Link } from "react-router-dom";
+
+const Label = styled.h6`
+	color: black;
+	font-size: 20px;
+	font-weight: bold;
+`;
 
 const Container = styled.div`
     display: flex;
@@ -19,10 +25,9 @@ const Left = styled.div`
     padding: 20px;
 `;
 
-const Logo = styled.h1``;
-
 const Desc = styled.p`
     margin: 20px 0px;
+    font-size: 30px;
 `;
 
 const Title = styled.h3`
@@ -42,17 +47,61 @@ const ContactItem = styled.div`
     align-items: center;
 `;
 
+const MenuItem = styled.div`
+	color: white;
+	font-size: 15px;
+	cursor: pointer;
+	margin-left: 50px;
+	font-weight: bold;
+
+	${mobile({ fontSize: '12px', marginLeft: '10px' })}
+`;
+
+const AboutButton = styled.button`
+	width: 100%;
+	border: 0;
+	text-decoration: none;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 15px;
+	letter-spacing: 2px;
+	padding: 12px;
+	font-weight: bold;
+	background-size: 300% 100%;
+	border-radius: 50px;
+	transition: 0.6s ease-in-out;
+	background-size: 200% auto;
+	color: white;
+	background-image: linear-gradient(
+		to left,
+		#ff512f 0%,
+		#dd2476 51%,
+		#ff512f 100%
+	);
+	&:hover {
+		background-position: right center;
+		color: #fff;
+		text-decoration: none;
+		box-shadow: 0 0px 20px rgba(220, 80, 57, 1);
+	}
+	box-sizing: border-box;
+`;
+
 const Footer = () => {
   return (
       <Container>
           <Left>
-                <Logo>Smart Motel</Logo>
+                <Label>
+                    SMART MOTEL
+                </Label>
                 <Desc>
                     Made by team EOF - HCMUT K19
                 </Desc>
-                <Button onClick = {() => {window.scrollTo(0, 0);}}>
-                    Back to Top page
-                </Button>
+                <Link to="/about">
+                    <MenuItem>
+                        <AboutButton>About Us</AboutButton>
+                    </MenuItem>
+                </Link>
           </Left>
           <Right>
                 <Title>Contact</Title>

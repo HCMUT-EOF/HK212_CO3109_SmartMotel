@@ -1,4 +1,3 @@
-
 import styled, { keyframes } from 'styled-components';
 import { mobile } from '../responsive';
 import { Link } from 'react-router-dom';
@@ -27,6 +26,7 @@ const Left = styled.div`
 	width: auto;
 	cursor: pointer;
 `;
+
 const Label = styled.h6`
 	color: white;
 	font-size: 18px;
@@ -203,10 +203,7 @@ const MenuItem = styled.div`
 	${mobile({ fontSize: '12px', marginLeft: '10px' })}
 `;
 
-const Banner = ({ onChange }) => {
-	const { search } = window.location;
-	const query = new URLSearchParams(search).get('perfume'); // Fetched the searched item successfully
-
+const Banner = () => {
 	return (
 		<Container>
 			<Wrapper>
@@ -239,7 +236,7 @@ const Banner = ({ onChange }) => {
 						</MenuItem>
 					</Link>
 					<Link
-						to="/tenant/info"
+						to="/tenantsList"
 						style={{ color: 'inherit', textDecoration: 'inherit' }}>
 						<MenuItem>
 							<WrapIcon>
