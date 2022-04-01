@@ -1,3 +1,7 @@
+'yarn build' to build the project
+'firebase deploy' to deploy project to firebase and open the link returned
+
+
 ## Available Scripts
 
 You must install the modules before running the app by:
