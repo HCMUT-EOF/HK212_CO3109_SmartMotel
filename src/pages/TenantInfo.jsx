@@ -2,7 +2,8 @@ import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import styled from "styled-components";
 import { mobile } from "../responsive";
-import { all, roomStatus } from "../data";
+import { db } from "../firebase";
+import { useState, useEffect } from "react";
 
 const Left = styled.div`
     flex: 2;
@@ -111,22 +112,96 @@ const TenantBox = styled.div`
     }
 `
 
+const LoadingGif = styled.img`
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+`
+
 const TenantInfo = () => {
     const { id } = useParams();
-    console.log(all[id - 1]);
+    const [data, setData] = useState([]);
+    const [room, setRoom] = useState([]);
+    const [thisTenant, setTenant] = useState([]);
+  
+    // map data and room array into 1 array
+    let tList = data.map((item, i) => Object.assign({}, item, room[i]));
+    // Sort tList based on RoomID
+    tList.sort(function(a, b){
+        return parseInt(a.RoomID) - parseInt(b.RoomID)
+    });
+  
+    const fetchData = () => {
+      db.collection("roomStatus").get().then((queryRoom) => {
+        queryRoom.forEach(element => {
+          var data = element.data();
+          setRoom(arr => [...arr, data]);
+        })
+      })
+  
+      db.collection("tenant").get().then((queryTenant) => {
+        queryTenant.forEach(element => {
+          var data = element.data();
+          setData(arr => [...arr , data]);
+        });
+      })
+    };
+  
+    useEffect(() => {
+      fetchData();
+    }, []);
 
-    if (roomStatus[id - 1]["Status"] === "In room")
+    // let obj = tList.find(x => x.RoomID === id);
+    // status:
+    // false: not in room
+    // true: in room
+
+    
+    let obj = tList.find(x => x.RoomID === id);
+
+
+    if(obj != null){
+        if(obj.status === true)
+            return (
+                <div className = "tenant-info">
+                    <Navbar/>
+                    <Display>
+                        <Left>
+                            <Container> 
+                                <DoorOutline style={{"backgroundImage": "linear-gradient(to right,#44C16F 0%,#50D665 51%,#4AD4CC 100%)"}}>
+                                    <Info/>
+                                    <RoomNumber>Room number: {id}</RoomNumber>
+                                    <Status>
+                                        Current status: {"Locked"}
+                                    </Status>
+                                </DoorOutline>
+                            </Container>
+                            <HistoryBox> 
+                                <Info/>
+                                History
+                            </HistoryBox>
+                        </Left>
+                            <TenantBox>
+                                abcd
+                            </TenantBox>
+                        <Right>
+                            abc
+                        </Right>
+                    </Display>
+                </div> 
+            );
+        else
         return (
             <div className = "tenant-info">
                 <Navbar/>
                 <Display>
                     <Left>
                         <Container> 
-                            <DoorOutline style={{"background-image": "linear-gradient(to right,#44C16F 0%,#50D665 51%,#4AD4CC 100%)"}}>
+                            <DoorOutline style={{"backgroundImage": "linear-gradient(to right,#FB9393 0%,#FBB993 51%,#FD4646 100%)"}}>
                                 <Info/>
                                 <RoomNumber>Room number: {id}</RoomNumber>
                                 <Status>
-                                    Current status: {roomStatus[id - 1]["Status"]}
+                                    Current status: {"Unlocked"}
                                 </Status>
                             </DoorOutline>
                         </Container>
@@ -144,35 +219,15 @@ const TenantInfo = () => {
                 </Display>
             </div> 
         );
-    else
-    return (
+    }
+    return(
         <div className = "tenant-info">
             <Navbar/>
             <Display>
-                <Left>
-                    <Container> 
-                        <DoorOutline style={{"background-image": "linear-gradient(to right,#FB9393 0%,#FBB993 51%,#FD4646 100%)"}}>
-                            <Info/>
-                            <RoomNumber>Room number: {id}</RoomNumber>
-                            <Status>
-                                Current status: {roomStatus[id - 1]["Status"]}
-                            </Status>
-                        </DoorOutline>
-                    </Container>
-                    <HistoryBox> 
-                        <Info/>
-                        History
-                    </HistoryBox>
-                </Left>
-                    <TenantBox>
-                        abcd
-                    </TenantBox>
-                <Right>
-                    abc
-                </Right>
+                <LoadingGif src = {"../resource/loading.gif"} alt = {"Loading"}/>
             </Display>
         </div> 
-    );
+    )
 };
 
 export default TenantInfo;

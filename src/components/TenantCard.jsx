@@ -62,18 +62,21 @@ const Icon = styled.img`
 `
 
 const TenantCard = ({ item }) => {
-  if (item[1].Status === "In room"){
+  // status:
+  // false: not in room
+  // true: in room
+  if (item.status === true){
     return (
       <Container> 
-        <TenantInfo style={{"background-image": "linear-gradient(to right,#44C16F 0%,#50D665 51%,#4AD4CC 100%)"}}>
-          <Link style={{ textDecoration: "none", color: "black"}} to = {"/tenantInfo/" + item[0].RoomID}>
+        <TenantInfo style={{"backgroundImage": "linear-gradient(to right,#44C16F 0%,#50D665 51%,#4AD4CC 100%)"}}>
+          <Link style={{ textDecoration: "none", color: "black"}} to = {"/tenantInfo/" + item.RoomID}>
           <Info/>
             <Icon src="https://static.thenounproject.com/png/3549086-200.png"/>
             <Room>
-              Room 0{item[0].RoomID} - Current Status: <b> {item[1].Status} </b>
+              Room 0{item.RoomID} - Current Status: <b> {"Locked"} </b> 
             </Room>
             <Name>
-              {item[0].Name}
+              {item.name}
             </Name> 
           </Link>    
         </TenantInfo>     
@@ -83,15 +86,15 @@ const TenantCard = ({ item }) => {
   else{
     return (
       <Container>
-          <TenantInfo style={{"background-image": "linear-gradient(to right,#FB9393 0%,#FBB993 51%,#FD4646 100%)"}}>
-            <Link style={{ textDecoration: "none", color: "black"}} to = {"/tenantInfo/" + item[0].RoomID}>
+          <TenantInfo style={{"backgroundImage": "linear-gradient(to right,#FB9393 0%,#FBB993 51%,#FD4646 100%)"}}>
+            <Link style={{ textDecoration: "none", color: "black"}} to = {"/tenantInfo/" + item.RoomID}>
             <Info/>
               <Icon src="https://static.thenounproject.com/png/1378886-200.png"/>
               <Room>
-                Room 0{item[0].RoomID} - Current Status: <b> {item[1].Status} </b>
+                Room 0{item.RoomID} - Current Status: <b> {"Unlocked"} </b>
               </Room>
               <Name>
-                {item[0].Name}
+                {item.name}
               </Name> 
             </Link>  
           </TenantInfo>
