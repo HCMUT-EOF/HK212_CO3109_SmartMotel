@@ -256,16 +256,6 @@ const Banner = () => {
 						</MenuItem>
 					</Link>
 					<Link
-						to="/control/dome"
-						style={{ color: 'inherit', textDecoration: 'inherit' }}>
-						<MenuItem>
-							<WrapIcon>
-								<DomeIcon></DomeIcon>
-								<InviLabel>DOME SYSTEM</InviLabel>
-							</WrapIcon>
-						</MenuItem>
-					</Link>
-					<Link
 						to="/control/washing"
 						style={{ color: 'inherit', textDecoration: 'inherit' }}>
 						<MenuItem>
