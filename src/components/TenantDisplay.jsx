@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import TenantCard from "./TenantCard";
-import { all, roomStatus } from "../data";
+import { db } from "../firebase";
+import { useState, useEffect } from "react";
 
 const Container = styled.div`
     padding: 10px;
@@ -8,25 +9,66 @@ const Container = styled.div`
     flex-wrap: wrap;
 `;
 
+const LoadingGif = styled.img`
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+`
+
 const TenantDisplay = () => { 
-  var tenantList = all.map(function(e, i){
-    return [e, roomStatus[i]];
+  const [data, setData] = useState([]);
+  const [room, setRoom] = useState([]);
+
+  // map data and room array into 1 array
+  let tList = data.map((item, i) => Object.assign({}, item, room[i]));
+  // Sort tList based on RoomID
+  tList.sort(function(a, b){
+    return parseInt(a.RoomID) - parseInt(b.RoomID)
   });
 
+  const fetchData = () => {
+    db.collection("roomStatus").get().then((queryRoom) => {
+      queryRoom.forEach(element => {
+        var data = element.data();
+        setRoom(arr => [...arr, data]);
+      })
+    })
+
+    db.collection("tenant").get().then((queryTenant) => {
+      queryTenant.forEach(element => {
+        var data = element.data();
+        setData(arr => [...arr , data]);
+      });
+    })
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+  
+  console.log("tList = ", tList);
+
   const valueList = (
-    tenantList? (<Container>
-      {tenantList.map((item) => (
+    tList? (<Container>
+      {tList.map((item) => (
           <TenantCard item = {item}/>
       ))}
-    </Container>)
-    : 'Tenant info is loading'
+    </Container>) : 'Loading'
   );
 
-  return (
-    <div>
-      {valueList}
-    </div>
-  );
+  
+  if(tList)
+    return (
+      <div>
+        {valueList}
+      </div>
+    );
+  else
+    return (
+      <div>
+        <LoadingGif src = {"../resource/loading.gif"} alt = {"Loading"}/>
+      </div>
+    )
 };
 
 export default TenantDisplay;
