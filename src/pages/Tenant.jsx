@@ -1,6 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
 import { mobile } from "../responsive";
+import Footer from "../components/Footer";
 import TenantDisplay from "../components/TenantDisplay";
 import Navbar from "../components/Navbar"
 
@@ -16,16 +17,13 @@ const Display = styled.div`
 `;
 
 const Tenant = () => {
-    const showTenantList = (
-        <Display>    
-            <TenantDisplay/>
-        </Display>
-    );
-
     return (
         <div>
             <Navbar/>
-            {showTenantList}
+                <Display>    
+                <TenantDisplay/>
+                </Display>
+            <Footer/>
         </div> 
     );
 };

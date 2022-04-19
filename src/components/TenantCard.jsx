@@ -62,7 +62,7 @@ const Icon = styled.img`
 `;
 
 const TenantCard = ({ item }) => {
-	if (item[1].Status === 'In room') {
+	if (item.status === true) {
 		return (
 			<Container>
 				<TenantInfo
@@ -72,14 +72,13 @@ const TenantCard = ({ item }) => {
 					}}>
 					<Link
 						style={{ textDecoration: 'none', color: 'black' }}
-						to={'/tenantInfo/' + item[0].RoomID}>
+						to={'/tenantInfo/' + item.RoomID}>
 						<Info />
 						<Icon src="https://static.thenounproject.com/png/3549086-200.png" />
 						<Room>
-							Room 0{item[0].RoomID} - Current Status:{' '}
-							<b> {item[1].Status} </b>
+							Room 0{item.RoomID} - Current Status: <b> {'Locked'} </b>
 						</Room>
-						<Name>{item[0].Name}</Name>
+						<Name>{item.name}</Name>
 					</Link>
 				</TenantInfo>
 			</Container>
@@ -94,14 +93,13 @@ const TenantCard = ({ item }) => {
 					}}>
 					<Link
 						style={{ textDecoration: 'none', color: 'black' }}
-						to={'/tenantInfo/' + item[0].RoomID}>
+						to={'/tenantInfo/' + item.RoomID}>
 						<Info />
 						<Icon src="https://static.thenounproject.com/png/1378886-200.png" />
 						<Room>
-							Room 0{item[0].RoomID} - Current Status:{' '}
-							<b> {item[1].Status} </b>
+							Room 0{item.RoomID} - Current Status: <b> {"Unlocked"} </b>
 						</Room>
-						<Name>{item[0].Name}</Name>
+						<Name>{item.name}</Name>
 					</Link>
 				</TenantInfo>
 			</Container>

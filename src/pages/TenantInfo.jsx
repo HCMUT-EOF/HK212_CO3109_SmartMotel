@@ -1,9 +1,11 @@
-import { useParams } from 'react-router-dom';
-import Navbar from '../components/Navbar';
-import styled from 'styled-components';
-import { mobile } from '../responsive';
-import { all, roomStatus } from '../data';
+import { useParams } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import styled from "styled-components";
+import { db } from "../firebase";
+import { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
+import { mobile } from '../responsive';
+import Footer from "../components/Footer";
 
 const Container = styled.div`
 	display: flex;
@@ -31,7 +33,7 @@ const Wrapper = styled.div`
 	align-items: center;
 	flex-direction: column;
 	gap: 60px;
-	border-top: 5px solid rgba(255, 0, 0, 1);
+	border-top: 5px solid rgba(0, 154, 23, 1);
 `;
 const NotInRoomWrapper = styled.div`
 	width: 50%;
@@ -44,7 +46,7 @@ const NotInRoomWrapper = styled.div`
 	align-items: center;
 	flex-direction: column;
 	gap: 60px;
-	border-top: 5px solid rgba(0, 154, 23, 1);
+	border-top: 5px solid rgba(255, 0, 0, 1);
 `;
 const LockedStatus = styled.div`
 	border: 0;
@@ -55,8 +57,8 @@ const LockedStatus = styled.div`
 	padding: 16px;
 	font-weight: bold;
 	border-radius: 50px;
-	background-color: rgba(255, 0, 0, 0.15);
-	color: rgba(255, 0, 0, 1);
+	background-color: rgba(0, 154, 23, 0.15);
+	color: rgba(0, 154, 23, 1);
 	text-align: center;
 `;
 const InfoStatus = styled.div`
@@ -89,8 +91,8 @@ const UnLockedStatus = styled.div`
 	border-radius: 50px;
 
 	text-align: center;
-	background-color: rgba(0, 154, 23, 0.15);
-	color: rgba(0, 154, 23, 1);
+	background-color: rgba(255, 0, 0, 0.15);
+	color: rgba(255, 0, 0, 1);
 `;
 const InviLabel = styled.div`
 	font-size: 17px;
@@ -222,200 +224,267 @@ const NormalText = styled.h4`
 	text-transform: uppercase;
 	text-align: center;
 `;
-const TenantInfo = () => {
-	const { id } = useParams();
-	console.log(all[id - 1]);
 
-	if (roomStatus[id - 1]['Status'] === 'In room')
-		return (
-			<>
-				<Navbar></Navbar>
-				<Container>
-					<Wrapper>
-						<HStack>
-							<LockedStatus>Door status: Locked</LockedStatus>
-							<IconWrapper>
-								<Link
-									to="/control/door"
-									style={{
-										color: 'inherit',
-										textDecoration: 'inherit',
-									}}>
-									<WrapIcon>
-										<HistoryIcon></HistoryIcon>
-										<InviLabel>History</InviLabel>
-									</WrapIcon>
-								</Link>
-								<Link
-									to="/control/door"
-									style={{
-										color: 'inherit',
-										textDecoration: 'inherit',
-									}}>
-									<WrapIcon>
-										<EditIcon></EditIcon>
-										<InviLabel>Edit info</InviLabel>
-									</WrapIcon>
-								</Link>
-								<Link
-									to="/tenantsList"
-									style={{
-										color: 'inherit',
-										textDecoration: 'inherit',
-									}}>
-									<WrapIcon>
-										<BackIcon></BackIcon>
-										<InviLabel>Back</InviLabel>
-									</WrapIcon>
-								</Link>
-							</IconWrapper>
-						</HStack>
-						<InfoWrapper>
-							<Title>Tenant's information</Title>
-							<Wrapper1>
-								<Avatar src="https://svgur.com/i/gMR.svg"></Avatar>
-								<InfoContainer>
-									<Info>
-										<Text>Name: &nbsp; </Text>
-										<NormalText>
-											Nguyen Duc Thanh
-										</NormalText>
-									</Info>
-									<Info>
-										<Text>Gender: &nbsp; </Text>
-										<NormalText>Male</NormalText>
-									</Info>
-									<Info>
-										<Text>Date of Birth: &nbsp; </Text>
-										<NormalText>19/12/2001</NormalText>
-									</Info>
-									<Info>
-										<Text>National ID: &nbsp; </Text>
-										<NormalText>312482081</NormalText>
-									</Info>
-								</InfoContainer>
-							</Wrapper1>
-							<InfoStack>
-								<InfoStatus>
-									<Text>Water consumed </Text>
-									<NormalText>100 litres</NormalText>
-								</InfoStatus>
-								<InfoStatus>
-									<Text>Laundry used </Text>
-									<NormalText>50 times</NormalText>
-								</InfoStatus>
-							</InfoStack>
-							<InfoStack>
-								<InfoStatus>
-									<Text>Door interacting</Text>
-									<NormalText>50 times</NormalText>
-								</InfoStatus>
-								<InfoStatus>
-									<Text>Payment</Text>
-									<NormalText>5.000.000 VND</NormalText>
-								</InfoStatus>
-							</InfoStack>
-						</InfoWrapper>
-					</Wrapper>
-				</Container>
-			</>
-		);
+const Display = styled.div`
+    flex: 3;
+    margin: 25px;
+    border: 0.05px solid black;
+    border-radius: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    ${mobile({ flex: 2, justifyContent: "center" })}
+`;
+
+const LoadingGif = styled.img`
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+`
+
+const TenantInfo = () => {
+    const { id } = useParams();
+    const [data, setData] = useState([]);
+    const [room, setRoom] = useState([]);
+  
+    // map data and room array into 1 array
+    let tList = data.map((e) => {
+		for (let element of room){
+		  if (e.RoomID == element.RoomID) Object.assign(e, element);
+		}
+		return e
+	  })
+	
+    // Sort tList based on RoomID
+    tList.sort(function(a, b){
+        return parseInt(a.RoomID) - parseInt(b.RoomID)
+    });
+  
+    const fetchData = () => {
+      db.collection("roomStatus").get().then((queryRoom) => {
+        queryRoom.forEach(element => {
+          var data = element.data();
+          setRoom(arr => [...arr, data]);
+        })
+      })
+  
+      db.collection("tenant").get().then((queryTenant) => {
+        queryTenant.forEach(element => {
+          var data = element.data();
+          setData(arr => [...arr , data]);
+        });
+      })
+    };
+  
+    useEffect(() => {
+      fetchData();
+    }, []);
+
+    
+    let obj = tList.find(x => x.RoomID === id);
+
+	if (obj != null)
+		if (obj.status === true)
+			return (
+				<>
+					<Navbar></Navbar>
+					<Container>
+						<Wrapper>
+							<HStack>
+								<LockedStatus>Door status: Locked</LockedStatus>
+								<IconWrapper>
+									<Link
+										to="/control/door"
+										style={{
+											color: 'inherit',
+											textDecoration: 'inherit',
+										}}>
+										<WrapIcon>
+											<HistoryIcon></HistoryIcon>
+											<InviLabel>History</InviLabel>
+										</WrapIcon>
+									</Link>
+									<Link
+										to = {'/tenants/edit/' + id}
+										style={{
+											color: 'inherit',
+											textDecoration: 'inherit',
+										}}>
+										<WrapIcon>
+											<EditIcon></EditIcon>
+											<InviLabel>Edit info</InviLabel>
+										</WrapIcon>
+									</Link>
+									<Link
+										to="/"
+										style={{
+											color: 'inherit',
+											textDecoration: 'inherit',
+										}}>
+										<WrapIcon>
+											<BackIcon></BackIcon>
+											<InviLabel>Back</InviLabel>
+										</WrapIcon>
+									</Link>
+								</IconWrapper>
+							</HStack>
+							<InfoWrapper>
+								<Title>Tenant's information</Title>
+								<Wrapper1>
+									<Avatar src="https://svgur.com/i/gMR.svg"></Avatar>
+									<InfoContainer>
+										<Info>
+											<Text>Name: &nbsp; </Text>
+											<NormalText>
+												{obj.name}
+											</NormalText>
+										</Info>
+										<Info>
+											<Text>Gender: &nbsp; </Text>
+											<NormalText>Male</NormalText>
+										</Info>
+										<Info>
+											<Text>Date of Birth: &nbsp; </Text>
+											<NormalText>{obj.bday.toDate().toDateString().slice(4).replace(/ /g, '-')}</NormalText>
+										</Info>
+										<Info>
+											<Text>National ID: &nbsp; </Text>
+											<NormalText>312482081</NormalText>
+										</Info>
+									</InfoContainer>
+								</Wrapper1>
+								<InfoStack>
+									<InfoStatus>
+										<Text>Water consumed </Text>
+										<NormalText>100 litres</NormalText>
+									</InfoStatus>
+									<InfoStatus>
+										<Text>Laundry used </Text>
+										<NormalText>50 times</NormalText>
+									</InfoStatus>
+								</InfoStack>
+								<InfoStack>
+									<InfoStatus>
+										<Text>Door interacting</Text>
+										<NormalText>50 times</NormalText>
+									</InfoStatus>
+									<InfoStatus>
+										<Text>Payment</Text>
+										<NormalText>{obj.rentCost.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")} VND</NormalText>
+									</InfoStatus>
+								</InfoStack>
+							</InfoWrapper>
+						</Wrapper>
+					</Container>
+					<Footer/>
+				</>
+			);
+		else
+			return (
+				<>
+					<Navbar></Navbar>
+					<Container>
+						<NotInRoomWrapper>
+							<HStack>
+								<UnLockedStatus>
+									Door status: Unlocked
+								</UnLockedStatus>
+								<IconWrapper>
+									<Link
+										to="/control/door"
+										style={{
+											color: 'inherit',
+											textDecoration: 'inherit',
+										}}>
+										<WrapIcon>
+											<HistoryIcon></HistoryIcon>
+											<InviLabel>History</InviLabel>
+										</WrapIcon>
+									</Link>
+									<Link
+										to = {'/tenants/edit/' + id}
+										style={{
+											color: 'inherit',
+											textDecoration: 'inherit',
+										}}>
+										<WrapIcon>
+											<EditIcon></EditIcon>
+											<InviLabel>Edit info</InviLabel>
+										</WrapIcon>
+									</Link>
+									<Link
+										to="/"
+										style={{
+											color: 'inherit',
+											textDecoration: 'inherit',
+										}}>
+										<WrapIcon>
+											<BackIcon></BackIcon>
+											<InviLabel>Back</InviLabel>
+										</WrapIcon>
+									</Link>
+								</IconWrapper>
+							</HStack>
+							<InfoWrapper>
+								<Title>Tenant's information</Title>
+								<Wrapper1>
+									<Avatar src="https://svgur.com/i/gMR.svg"></Avatar>
+									<InfoContainer>
+										<Info>
+											<Text>Name: &nbsp; </Text>
+											<NormalText>
+												{obj.name}
+											</NormalText>
+										</Info>
+										<Info>
+											<Text>Gender: &nbsp; </Text>
+											<NormalText>Male</NormalText>
+										</Info>
+										<Info>
+											<Text>Date of Birth: &nbsp; </Text>
+											<NormalText>{obj.bday.toDate().toDateString().slice(4).replace(/ /g, '-')}</NormalText>
+										</Info>
+										<Info>
+											<Text>National ID: &nbsp; </Text>
+											<NormalText>312482081</NormalText>
+										</Info>
+									</InfoContainer>
+								</Wrapper1>
+								<InfoStack>
+									<InfoStatus>
+										<Text>Water consumed </Text>
+										<NormalText>100 litres</NormalText>
+									</InfoStatus>
+									<InfoStatus>
+										<Text>Laundry used </Text>
+										<NormalText>50 times</NormalText>
+									</InfoStatus>
+								</InfoStack>
+								<InfoStack>
+									<InfoStatus>
+										<Text>Door interacting</Text>
+										<NormalText>50 times</NormalText>
+									</InfoStatus>
+									<InfoStatus>
+										<Text>Payment</Text>
+										<NormalText>{obj.rentCost.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")} VND</NormalText>
+									</InfoStatus>
+								</InfoStack>
+							</InfoWrapper>
+						</NotInRoomWrapper>
+					</Container>
+					<Footer/>
+				</>
+			);
 	else
-		return (
-			<>
-				<Navbar></Navbar>
-				<Container>
-					<NotInRoomWrapper>
-						<HStack>
-							<UnLockedStatus>
-								Door status: Unlocked
-							</UnLockedStatus>
-							<IconWrapper>
-								<Link
-									to="/control/door"
-									style={{
-										color: 'inherit',
-										textDecoration: 'inherit',
-									}}>
-									<WrapIcon>
-										<HistoryIcon></HistoryIcon>
-										<InviLabel>History</InviLabel>
-									</WrapIcon>
-								</Link>
-								<Link
-									to="/control/door"
-									style={{
-										color: 'inherit',
-										textDecoration: 'inherit',
-									}}>
-									<WrapIcon>
-										<EditIcon></EditIcon>
-										<InviLabel>Edit info</InviLabel>
-									</WrapIcon>
-								</Link>
-								<Link
-									to="/tenantsList"
-									style={{
-										color: 'inherit',
-										textDecoration: 'inherit',
-									}}>
-									<WrapIcon>
-										<BackIcon></BackIcon>
-										<InviLabel>Back</InviLabel>
-									</WrapIcon>
-								</Link>
-							</IconWrapper>
-						</HStack>
-						<InfoWrapper>
-							<Title>Tenant's information</Title>
-							<Wrapper1>
-								<Avatar src="https://svgur.com/i/gMR.svg"></Avatar>
-								<InfoContainer>
-									<Info>
-										<Text>Name: &nbsp; </Text>
-										<NormalText>
-											Nguyen Duc Thanh
-										</NormalText>
-									</Info>
-									<Info>
-										<Text>Gender: &nbsp; </Text>
-										<NormalText>Male</NormalText>
-									</Info>
-									<Info>
-										<Text>Date of Birth: &nbsp; </Text>
-										<NormalText>19/12/2001</NormalText>
-									</Info>
-									<Info>
-										<Text>National ID: &nbsp; </Text>
-										<NormalText>312482081</NormalText>
-									</Info>
-								</InfoContainer>
-							</Wrapper1>
-							<InfoStack>
-								<InfoStatus>
-									<Text>Water consumed </Text>
-									<NormalText>100 litres</NormalText>
-								</InfoStatus>
-								<InfoStatus>
-									<Text>Laundry used </Text>
-									<NormalText>50 times</NormalText>
-								</InfoStatus>
-							</InfoStack>
-							<InfoStack>
-								<InfoStatus>
-									<Text>Door interacting</Text>
-									<NormalText>50 times</NormalText>
-								</InfoStatus>
-								<InfoStatus>
-									<Text>Payment</Text>
-									<NormalText>5.000.000 VND</NormalText>
-								</InfoStatus>
-							</InfoStack>
-						</InfoWrapper>
-					</NotInRoomWrapper>
-				</Container>
-			</>
-		);
+		return(
+			<div className = "tenant-info">
+				<Navbar/>
+				<Display>
+					<LoadingGif src = {"../resource/loading.gif"} alt = {"Loading"}/>
+				</Display>
+			</div> 
+		)
 };
 
 export default TenantInfo;

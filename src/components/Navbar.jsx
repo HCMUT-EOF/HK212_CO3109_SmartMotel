@@ -236,7 +236,7 @@ const Banner = () => {
 						</MenuItem>
 					</Link>
 					<Link
-						to="/tenantsList"
+						to="/"
 						style={{ color: 'inherit', textDecoration: 'inherit' }}>
 						<MenuItem>
 							<WrapIcon>
@@ -245,7 +245,8 @@ const Banner = () => {
 							</WrapIcon>
 						</MenuItem>
 					</Link>
-					<Link
+					{/* Temporarily doesn't need */}
+					{/* <Link
 						to="/control/door"
 						style={{ color: 'inherit', textDecoration: 'inherit' }}>
 						<MenuItem>
@@ -254,7 +255,7 @@ const Banner = () => {
 								<InviLabel>DOOR CONTROL</InviLabel>
 							</WrapIcon>
 						</MenuItem>
-					</Link>
+					</Link> */}
 					<Link
 						to="/control/washing"
 						style={{ color: 'inherit', textDecoration: 'inherit' }}>

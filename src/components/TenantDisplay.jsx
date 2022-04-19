@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import TenantCard from "./TenantCard";
+import Footer from "./Footer";
 import { db } from "../firebase";
 import { useState, useEffect } from "react";
 
@@ -20,7 +21,15 @@ const TenantDisplay = () => {
   const [room, setRoom] = useState([]);
 
   // map data and room array into 1 array
-  let tList = data.map((item, i) => Object.assign({}, item, room[i]));
+  // let tList = data.map((item, i) => Object.assign({}, item, room[i]));
+
+  let tList = data.map((e) => {
+    for (let element of room){
+      if (e.RoomID == element.RoomID) Object.assign(e, element);
+    }
+    return e
+  })
+
   // Sort tList based on RoomID
   tList.sort(function(a, b){
     return parseInt(a.RoomID) - parseInt(b.RoomID)
