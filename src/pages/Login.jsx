@@ -74,13 +74,14 @@ const Form = styled.form`
 const Input = styled.input`
 	flex: 1;
 	width: 100%;
-	margin-top: 10px;
+	margin-top: 15px;
 	border: none;
 	outline: none;
 	font-size: 16px;
 	color: white;
 	background: 0;
 	padding: 0px;
+	font-weight: bold;
 `;
 
 const InputContainer = styled.div`
@@ -130,7 +131,7 @@ const ForgotPassword = styled.a`
 	font-weight: bold;
 	display: block;
 	float: right;
-	margin-top: 5px;
+	margin-top: 10px;
 `;
 
 const Login = () => {
