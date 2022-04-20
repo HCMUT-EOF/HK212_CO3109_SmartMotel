@@ -1,8 +1,7 @@
-import { initializeApp } from "firebase/app";
-//import { getAnalytics } from "firebase/analytics";
-import { getFirestore } from "@firebase/firestore";
+import firebase from 'firebase';
+import "firebase/firestore";
 
-const firebaseConfig = {
+var firebaseConfig = {
     apiKey: "AIzaSyDB16dHneUNEq94j_1x3uT-La0C4kw5OqE",
     authDomain: "smartmotel-c8a3f.firebaseapp.com",
     databaseURL:
@@ -11,10 +10,11 @@ const firebaseConfig = {
     storageBucket: "smartmotel-c8a3f.appspot.com",
     messagingSenderId: "1023684165811",
     appId: "1:1023684165811:web:7bc854f32176bb189c70c6",
-    measurementId: "G-ZG3N8SSNZB",
+    measurementId: "G-ZG3 N8SSNZB",
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-export const db = getFirestore();
-//const analytics = getAnalytics(app);
+firebase.initializeApp(firebaseConfig);
+
+export const db = firebase.firestore();
+
+export default firebase;
