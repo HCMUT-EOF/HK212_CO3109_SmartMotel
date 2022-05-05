@@ -1,6 +1,7 @@
 import styled, { keyframes } from 'styled-components';
-import { mobile } from '../responsive';
-import { Link } from 'react-router-dom';
+import { rtdb, db } from '../firebase';
+import React, { useState, useEffect } from 'react';
+
 const Wrapper = styled.div`
 	width: 45%;
 	height: 50%;
@@ -48,14 +49,44 @@ const Text = styled.h2`
 	letter-spacing: 1px;
 	text-transform: uppercase;
 `;
+const searchByRfid=(rfid,callback) =>{
+	var tenant = db.collection("tenant")
+	var query = tenant.where("rfid","==",rfid)
+	var result
+	query.get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+			result = doc.data()	
+			callback(result)	
+        });
+    })
+    .catch((error) => {
+        console.log("Error getting documents: ", error);
+    });
+	
+	
+}
 const WashingMachine = () => {
+	const [status, setStatus] = useState("NA");
+	const [user, setUser] = useState("NA")
+	useEffect(() => {
+        var washerRef = rtdb.ref("/washingMachineStat/washingMachine1").on('value', (snapshot) => {
+			setStatus(snapshot.val().status);
+			searchByRfid(snapshot.val().rfid,(res)=>{
+				setUser(res.name)
+			})
+		});
+			
+    }, []);
+	
+
+	
 	return (
 		<Wrapper>
 			<WashingImage src="https://svgur.com/i/gLd.svg"></WashingImage>
 			<WashingInfo>
 				<Title>Washing Machine 1</Title>
-				<Status>Status: In use</Status>
-				<Text>User: Nguyen Duc Thanh</Text>
+				<Status>Status: {status}</Status>
+				<Text>User: {user}</Text>
 				<Text>Elapsed Time: </Text>
 			</WashingInfo>
 		</Wrapper>

@@ -12,9 +12,13 @@ var firebaseConfig = {
     appId: "1:1023684165811:web:7bc854f32176bb189c70c6",
     measurementId: "G-ZG3 N8SSNZB",
 };
-
-firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+ }else {
+    firebase.app(); // if already initialized, use that one
+ }
 
 export const db = firebase.firestore();
+export const rtdb = firebase.database();
 
 export default firebase;
