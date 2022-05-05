@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import TenantCard from "./TenantCard";
-import Footer from "./Footer";
 import { db } from "../firebase";
 import { useState, useEffect } from "react";
 
