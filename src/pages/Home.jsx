@@ -2,8 +2,8 @@ import * as React from "react";
 import styled from "styled-components";
 import { mobile } from "../responsive";
 import Footer from "../components/Footer";
-import TenantDisplay from "../components/TenantDisplay";
-import Navbar from "../components/Navbar"
+import Door from "../components/Door";
+import Navbar from "../components/Navbar";
 
 const Display = styled.div`
     flex: 3;
@@ -21,7 +21,7 @@ const Tenant = () => {
         <div>
             <Navbar/>
                 <Display>    
-                <TenantDisplay/>
+                    <Door/>
                 </Display>
             <Footer/>
         </div> 
