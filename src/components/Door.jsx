@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
-import TenantCard from "./TenantCard";
 import { rtdb } from "../firebase";
 import { useState, useEffect } from "react";
 
@@ -44,12 +42,6 @@ const Container = styled.div`
 	}
 `;
 
-const Room = styled.div`
-	font-size: 16px;
-	margin-left: 15px;
-	margin-top: 5px;
-	letter-spacing: 0.5px;
-`;
 
 const Name = styled.div`
 	font-size: 22px;
@@ -64,53 +56,51 @@ const Icon = styled.img`
 	height: 58px;
 `;
 
+const SwitchBtn = styled.button`
+	width: 100%;
+	height: 100%;
+	border-radius: 5px;
+`
+
 
 const Door = () => { 
-    const [status, setStatus] = useState("NA");
+    const [status, setStatus] = useState("N/A");
     useEffect(() => {
         rtdb.ref("/doorStat/status").on('value', (snapshot) => {
 			const data = snapshot.val();
-			console.log(data);
 			setStatus(data);
 		});
     }, []);
 
-    if (status === 'CLOSE')    
-        return (
-            <Container>
-                <TenantInfo
-                    style={{
-                        'background-image':
-                            'linear-gradient(to right,#44C16F 0%,#50D665 51%,#4AD4CC 100%)',
-                    }}>
-                    <Link   
-                        style={{ textDecoration: 'none', color: 'black' }}
-                        to={"/"}>   
-                        <Info />
-                        <Icon src="https://static.thenounproject.com/png/3549086-200.png" />
-                        <Name>{status}</Name>
-                    </Link>
-                </TenantInfo>
-            </Container>
-        )
-    else 
-        return (
-            <Container>
-                <TenantInfo
-                    style={{
-                        'background-image':
-                            'linear-gradient(to right,#44C16F 0%,#50D665 51%,#4AD4CC 100%)',
-                    }}>
-                    <Link   
-                        style={{ textDecoration: 'none', color: 'black' }}
-                        to={"/"}>   
-                        <Info />
-                        <Icon src="https://static.thenounproject.com/png/3549086-200.png" />
-                        <Name>{status}</Name>
-                    </Link>
-                </TenantInfo>
-            </Container>
-        )
+	const doorInteract = () => {
+		if (status !== 'OPEN'){
+			rtdb.ref("/doorStat/").set({
+				'status': 'OPEN'
+			}).catch(alert);
+		}
+		if (status !== 'CLOSE'){
+			rtdb.ref("/doorStat/").set({
+				'status': 'CLOSE'
+			}).catch(alert);
+		}
+	}
+
+	return (
+		<Container>
+			<SwitchBtn onClick = {() => doorInteract()}>
+				Open/Close
+			</SwitchBtn>
+			<TenantInfo
+				style={{'background-image': 'linear-gradient(to right,#44C16F 0%,#50D665 51%,#4AD4CC 100%)'}}
+				>
+					<Info />
+					<Icon src="https://static.thenounproject.com/png/3549086-200.png" />
+					<Name>{status}</Name>
+			</TenantInfo>
+			
+		</Container>
+	)
+
 };
 
 export default Door;
