@@ -226,16 +226,6 @@ const Banner = () => {
 				<Right>
 					<MenuItem>WELCOME BACK, THANH</MenuItem>
 					<Link
-						to="/"
-						style={{ color: 'inherit', textDecoration: 'inherit' }}>
-						<MenuItem>
-							<WrapIcon>
-								<NotiIcon></NotiIcon>
-								<InviLabel>NOTIFICATIONS</InviLabel>
-							</WrapIcon>
-						</MenuItem>
-					</Link>
-					<Link
 						to="/Tenants"
 						style={{ color: 'inherit', textDecoration: 'inherit' }}>
 						<MenuItem>

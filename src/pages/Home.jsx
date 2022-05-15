@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { mobile } from "../responsive";
 import Footer from "../components/Footer";
 import Door from "../components/Door";
+import LogList from "../components/LogList";
+import TenantDisplay from "../components/TenantDisplay";
 import Navbar from "../components/Navbar";
 
 const Display = styled.div`
@@ -22,6 +24,9 @@ const Tenant = () => {
             <Navbar/>
                 <Display>    
                     <Door/>
+                </Display>
+                <Display>
+                    <LogList/>
                 </Display>
             <Footer/>
         </div> 
