@@ -50,21 +50,6 @@ const Text = styled.h2`
 	text-transform: uppercase;
 `;
 
-// const searchByRfid=(rfid,callback) =>{
-// 	var tenant = db.collection("tenant")
-// 	var query = tenant.where("rfid","==",rfid)
-// 	var result
-// 	query.get().then((querySnapshot) => {
-//         querySnapshot.forEach((doc) => {
-// 			result = doc.data()	
-// 			callback(result)	
-//         });
-//     })
-//     .catch((error) => {
-//         console.log("Error getting documents: ", error);
-//     });
-// }
-
 const WashingMachine = () => {
 	const [status, setStatus] = useState("NA");
 	const [user, setUser] = useState("NA")
@@ -73,9 +58,6 @@ const WashingMachine = () => {
         rtdb.ref("/washingMachineStat/washingMachine1").on('value', (snapshot) => {
 			setStatus(snapshot.val().status);
 			setUser(snapshot.val().rfid)
-			// searchByRfid(snapshot.val().rfid,(res)=>{
-			// 	setUser(res.rfid)
-			// })
 		});	
     }, []);
 	

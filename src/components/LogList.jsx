@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Log from "./Log";
-import { useState, useEffect,  } from "react";
+import { useState, useEffect } from "react";
+import { db } from "../firebase";
 
 const Container = styled.div`
     padding: 10px;
@@ -8,18 +9,19 @@ const Container = styled.div`
     flex-wrap: wrap;
 `;
 
-
 const LogList = () => { 
     const [log, setLog] = useState([]);
 
-    const queryData = () => {
+    useEffect(() => {
         db.collection("doorLog").orderBy("time", "desc").get().then((queryLog) => {
+            const current = [];
             queryLog.forEach(element => {
                 var data = element.data();
-                setLog(arr => [...arr, data]);
+                current.push(data);
             })
+            setLog(current);
         })
-    };
+    }, [log]);
 
     const valueList = (
         log? (<Container>
@@ -28,11 +30,6 @@ const LogList = () => {
         ))}
         </Container>) : 'Loading'
     );
-
-    useEffect(() => {
-        queryData();
-    }, []);
-
 
     return (
         <div>
