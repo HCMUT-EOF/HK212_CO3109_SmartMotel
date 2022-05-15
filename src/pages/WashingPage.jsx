@@ -1,8 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { mobile } from '../responsive';
-import WashingMachine from '../components/InUseWashingMachine';
-import IdleMachine from '../components/IdleWashingMachine';
+import WashingMachine from '../components/WashingMachine';
 
 import Navbar from '../components/Navbar';
 const Wrapper = styled.div`
@@ -20,7 +19,6 @@ const WashingPage = () => {
 			<Navbar />
 			<Wrapper>
 				<WashingMachine />
-				<IdleMachine />
 			</Wrapper>
 		</div>
 	);

@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { rtdb } from "../firebase";
-import { useState, useEffect } from "react";
+import { db, rtdb } from "../firebase";
+import { useState, useEffect, useCallback } from "react";
 
 const Info = styled.div`
 	flex: 3;
@@ -42,6 +42,12 @@ const Container = styled.div`
 	}
 `;
 
+const Room = styled.div`
+	font-size: 16px;
+	margin-left: 15px;
+	margin-top: 5px;
+	letter-spacing: 0.5px;
+`;
 
 const Name = styled.div`
 	font-size: 22px;
@@ -64,43 +70,76 @@ const SwitchBtn = styled.button`
 
 
 const Door = () => { 
-    const [status, setStatus] = useState("N/A");
-    useEffect(() => {
+    const [status, setStatus] = useState("CLOSE");
+	const [rf, setRfid] = useState("N/A");
+
+	const doorInteract = (inp) => {
+		// Receive and save log
+		const d = new Date();
+		d.getDate();
+
+		db.collection("doorLog").add({
+			status: status,		
+			time: d,
+			user: inp
+		})
+		.then((docRef) => {
+			console.log("Added successfully");
+			alert('Opened successfully');
+			setRfid(inp);
+		})
+		.catch((error) => {
+			console.log("error adding :", error);
+		})
+	};
+
+	useEffect(() => {
         rtdb.ref("/doorStat/status").on('value', (snapshot) => {
 			const data = snapshot.val();
-			setStatus(data);
+			setStatus(data)
 		});
-    }, []);
 
-	const doorInteract = () => {
-		if (status !== 'OPEN'){
-			rtdb.ref("/doorStat/").set({
-				'status': 'OPEN'
-			}).catch(alert);
+		rtdb.ref("washingMachineStat/washingMachine1/rfid").on('value', (snapshot) => {
+			const data = snapshot.val();
+			setRfid(data);
+		});
+		if (status === 'OPEN' && rf !== "N/A"){
+			doorInteract(rf);
 		}
-		if (status !== 'CLOSE'){
-			rtdb.ref("/doorStat/").set({
-				'status': 'CLOSE'
-			}).catch(alert);
-		}
-	}
+		console.log("Current RFID = ", rf)
+    }, [status]);
 
-	return (
-		<Container>
-			<SwitchBtn onClick = {() => doorInteract()}>
-				Open/Close
-			</SwitchBtn>
-			<TenantInfo
-				style={{'background-image': 'linear-gradient(to right,#44C16F 0%,#50D665 51%,#4AD4CC 100%)'}}
-				>
-					<Info />
-					<Icon src="https://static.thenounproject.com/png/3549086-200.png" />
-					<Name>{status}</Name>
-			</TenantInfo>
-			
-		</Container>
-	)
-
+	if (status === 'OPEN')
+		return (
+			<Container>
+				{/* <SwitchBtn onClick = {() => doorInteract()}>
+					Open/Close
+				</SwitchBtn> */}
+				<TenantInfo
+					style={{'background-image': 'linear-gradient(to right,#44C16F 0%,#50D665 51%,#4AD4CC 100%)'}}
+					>
+						<Info />
+						<Icon src="https://static.thenounproject.com/png/3549086-200.png" />
+						<Name>{status}</Name>
+				</TenantInfo>
+			</Container> 
+		)
+	else
+		return (
+			<Container>
+				{/* <SwitchBtn onClick = {() => doorInteract()}>
+					Open/Close
+				</SwitchBtn> */}
+				<TenantInfo
+					style={{
+						'background-image': 'linear-gradient(to right,#FB9393 0%,#FBB993 51%,#FD4646 100%)',
+					}}>
+						<Info />
+						<Icon src="https://static.thenounproject.com/png/3549086-200.png" />
+						<Name>{status}</Name>
+				</TenantInfo>
+			</Container>
+		)
 };
 
-export default Door;
+export default Door
