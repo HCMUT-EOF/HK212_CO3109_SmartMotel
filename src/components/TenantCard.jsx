@@ -1,84 +1,86 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-const Info = styled.div`
-	flex: 3;
-	opacity: 0;
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	background-color: rgba(0, 0, 0, 0.2);
-	z-index: 5;
+const InfoStatus = styled.div`
+	border: 0;
+	text-decoration: none;
+	font-size: 17px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	padding: 12px;
+	font-weight: bold;
+	border-radius: 10px;
+	background-color: hsl(212, 86%, 95%);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	flex-wrap: wrap;
+	justify-content: center;
+	width: 150px;
+`;
+
+const InfoWrapper = styled.div`
+	border-radius: 15px;
+	background: rgba(255, 255, 255, 0.13);
+	backdrop-filter: blur(15px);
+	box-shadow: 0 3px 15px hsl(229, 6%, 85%);
 	display: flex;
 	align-items: center;
-	justify-content: center;
-	transition: all 0.5s ease;
-	cursor: pointer;
+	padding: 2%;
 `;
-
-const TenantInfo = styled.div`
-	width: 100%;
-	height: 100%;
-	border-radius: 5px;
-`;
-
 const Container = styled.div`
-	flex: 3;
-	margin: 10px;
-	min-height: 60px;
-	min-width: 800px;
-	height: 50px;
+	width: 95%;
 	display: flex;
-	position: relative;
-	border: 0.5px solid black;
-	border-radius: 5px;
-	&:hover ${Info} {
-		opacity: 0.6;
-		background-position: right center;
-		color: #fff;
-		text-decoration: none;
-		box-shadow: 0 0px 20px rgba(220, 80, 57, 1);
-	}
+	align-items: flex-start;
+	flex-direction: column;
 `;
 
-const Room = styled.div`
-	font-size: 16px;
-	margin-left: 15px;
-	margin-top: 5px;
-	letter-spacing: 0.5px;
+const InfoStack = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	flex-wrap: wrap;
+	gap: 20px;
 `;
 
-const Name = styled.div`
-	font-size: 22px;
-	margin-left: 15px;
-	letter-spacing: 0.3px;
-	font-weight: bold;
-	float: left;
+const Text = styled.h2`
+	font-size: 18px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	color: hsl(212, 86%, 64%);
+	text-align: center;
 `;
-const Icon = styled.img`
-	float: right;
-	width: 58px;
-	height: 58px;
+const NormalText = styled.h4`
+	font-size: 18px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	text-align: center;
 `;
 
 const TenantCard = ({ item }) => {
 	return (
 		<Container>
-			<TenantInfo
+			<Link
 				style={{
-					'background-image':
-						'linear-gradient(to right,#44C16F 0%,#50D665 51%,#4AD4CC 100%)',
-				}}>
-				<Link
-					style={{ textDecoration: 'none', color: 'black' }}
-					to={'/tenantInfo/' + item.RoomID}>
-					<Info />
-					<Room>
-						Room 0{item.RoomID}
-					</Room>
-					<Name>{item.name}</Name>
-				</Link>
-			</TenantInfo>
+					textDecoration: 'none',
+					color: 'black',
+					width: '100%',
+				}}
+				to={'/tenantInfo/' + item.RoomID}>
+				<InfoWrapper>
+					<InfoStack>
+						<InfoStatus>
+							<Text>Room</Text>
+							<NormalText>{item.RoomID} </NormalText>
+						</InfoStatus>
+						<InfoStatus style={{ flex: '1' }}>
+							<Text>Tenant</Text>
+							<NormalText>{item.name}</NormalText>
+						</InfoStatus>
+					</InfoStack>
+				</InfoWrapper>
+			</Link>
 		</Container>
 	);
 };

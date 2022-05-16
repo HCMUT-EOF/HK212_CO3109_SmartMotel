@@ -8,7 +8,7 @@ const Container = styled.div`
 `;
 const Wrapper = styled.div`
 	background-color: black;
-	padding: 15px 5%;
+	padding: 15px 8%;
 	display: flex;
 	letter-spacing: 1.5px;
 	align-items: center;

@@ -1,78 +1,100 @@
 import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
+import Navbar from '../components/Navbar';
+import { db } from '../firebase';
+import { Link } from 'react-router-dom';
+import { mobile } from '../responsive';
 
-const Info = styled.div`
-	flex: 3;
-	opacity: 0;
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	background-color: rgba(0, 0, 0, 0.2);
-	z-index: 5;
+const InfoStatus = styled.div`
+	border: 0;
+	text-decoration: none;
+	font-size: 17px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	padding: 12px;
+	font-weight: bold;
+	border-radius: 10px;
+	background-color: hsl(212, 86%, 95%);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	flex-wrap: wrap;
+	justify-content: center;
+	width: 150px;
+`;
+
+const InfoWrapper = styled.div`
+	width: 95%;
+	border-radius: 15px;
+	background: rgba(255, 255, 255, 0.13);
+	backdrop-filter: blur(15px);
+	box-shadow: 0 3px 15px hsl(229, 6%, 85%);
 	display: flex;
 	align-items: center;
-	justify-content: center;
-	transition: all 0.5s ease;
-	cursor: pointer;
+	padding: 2%;
 `;
 
-const TenantInfo = styled.div`
-	width: 100%;
-	height: 100%;
-	border-radius: 5px;
-`;
-
-const Container = styled.div`
-	flex: 3;
-	margin: 10px;
-	min-height: 60px;
-	min-width: 800px;
-	height: 50px;
+const InfoStack = styled.div`
 	display: flex;
-	position: relative;
-	border: 0.5px solid black;
-	border-radius: 5px;
-	&:hover ${Info} {
-		opacity: 0.6;
-		background-position: right center;
-		color: #fff;
-		text-decoration: none;
-		box-shadow: 0 0px 20px rgba(220, 80, 57, 1);
-	}
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	flex-wrap: wrap;
+	gap: 20px;
 `;
 
-const Name = styled.div`
-	font-size: 22px;
-	margin-left: 15px;
-	letter-spacing: 0.3px;
-	font-weight: bold;
-	float: left;
+const Text = styled.h2`
+	font-size: 18px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	color: hsl(212, 86%, 64%);
+	text-align: center;
+`;
+const NormalText = styled.h4`
+	font-size: 18px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	text-align: center;
 `;
 
 const Log = ({ item }) => {
-    const getCurrentTime = (sec) => {
-        var date = new Date(null);
-        date.setSeconds(sec); // specify value for SECONDS here
-        return date.toString();
-    }
+	const getCurrentTime = (sec) => {
+		var date = new Date(null);
 
-	const displayPos = (pos) => {return pos === "IN" ? "Inside" : "Outside";}
+		// specify value for SECONDS here
+		// Convert from GMT +0800 to GMT +0700 for some reason
+		date.setSeconds(sec - 3600); 
+		return date.toString();
+	};
+
+	const displayPos = () => {
+		return item.openFrom === 'IN' ? 'Inside' : 'Outside';
+	};
 
 	const displayTime = () => {
-		var time = getCurrentTime(item.time.seconds);
-		return time.replace("GMT+0700 (Indochina Time)", "");
-	}
-    
+		var time = getCurrentTime(item.time.seconds); 
+		return time
+			.replace('GMT+0700 (Indochina Time)', '')
+			.replace('GMT+0700 (+07)', '');
+	};
+
 	return (
-		<Container>
-			<TenantInfo
-				style={{
-					'background-image':
-						'linear-gradient(to right,#44C16F 0%,#50D665 51%,#4AD4CC 100%)',
-				}}>
-				<Info />
-				<Name>OPENED by RFID {item.user} - from {displayPos(item.openFrom)} - at {displayTime()}</Name>
-			</TenantInfo>
-		</Container>
+		<InfoWrapper>
+			<InfoStack>
+				<InfoStatus>
+					<Text>User</Text>
+					<NormalText>{item.user} </NormalText>
+				</InfoStatus>
+				<InfoStatus>
+					<Text>From</Text>
+					<NormalText>{displayPos()}</NormalText>
+				</InfoStatus>
+				<InfoStatus style={{ flex: '1.5' }}>
+					<Text>At</Text>
+					<NormalText>{displayTime()}</NormalText>
+				</InfoStatus>
+			</InfoStack>
+		</InfoWrapper>
 	);
 };
 
