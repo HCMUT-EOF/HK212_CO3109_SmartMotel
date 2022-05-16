@@ -1,11 +1,11 @@
-import { useParams } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import styled from "styled-components";
-import { db } from "../firebase";
-import { useState, useEffect } from "react";
+import { useParams } from 'react-router-dom';
+import Navbar from '../components/Navbar';
+import styled from 'styled-components';
+import { db } from '../firebase';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { mobile } from '../responsive';
-import Footer from "../components/Footer";
+import Footer from '../components/Footer';
 
 const Container = styled.div`
 	display: flex;
@@ -17,7 +17,7 @@ const Container = styled.div`
 const HStack = styled.div`
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: flex-end;
 	width: 100%;
 `;
 
@@ -27,13 +27,13 @@ const Wrapper = styled.div`
 	border-radius: 10px;
 	box-shadow: 0px 30px 40px -20px hsl(229, 6%, 66%);
 	box-size: border-box;
-	border-top: 5px solid rgba(0, 154, 23, 1);
+	border-top: 5px solid hsl(212, 86%, 64%);
 	display: flex;
 	justify-content: space-evenly;
 	align-items: center;
 	flex-direction: column;
 	gap: 60px;
-	border-top: 5px solid rgba(0, 154, 23, 1);
+	border-top: 5px solid hsl(212, 86%, 64%);
 `;
 const NotInRoomWrapper = styled.div`
 	width: 50%;
@@ -46,7 +46,7 @@ const NotInRoomWrapper = styled.div`
 	align-items: center;
 	flex-direction: column;
 	gap: 60px;
-	border-top: 5px solid rgba(255, 0, 0, 1);
+	border-top: 5px solid hsl(212, 86%, 64%);
 `;
 const LockedStatus = styled.div`
 	border: 0;
@@ -80,6 +80,7 @@ const InfoStatus = styled.div`
 	width: 220px;
 	gap: 8px;
 `;
+
 const UnLockedStatus = styled.div`
 	border: 0;
 	text-decoration: none;
@@ -226,62 +227,65 @@ const NormalText = styled.h4`
 `;
 
 const Display = styled.div`
-    flex: 3;
-    margin: 25px;
-    border: 0.05px solid black;
-    border-radius: 1px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    ${mobile({ flex: 2, justifyContent: "center" })}
+	flex: 3;
+	margin: 25px;
+	border: 0.05px solid black;
+	border-radius: 1px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	${mobile({ flex: 2, justifyContent: 'center' })}
 `;
 
 const LoadingGif = styled.img`
-    width: 180px;
-    height: 180px;
-    border-radius: 50%;
-`
+	width: 180px;
+	height: 180px;
+	border-radius: 50%;
+`;
 
 const TenantInfo = () => {
-    const { id } = useParams();
-    const [data, setData] = useState([]);
-    const [room, setRoom] = useState([]);
-  
-    // map data and room array into 1 array
-    let tList = data.map((e) => {
-		for (let element of room){
-		  if (e.RoomID == element.RoomID) Object.assign(e, element);
-		}
-		return e
-	  })
-	
-    // Sort tList based on RoomID
-    tList.sort(function(a, b){
-        return parseInt(a.RoomID) - parseInt(b.RoomID)
-    });
-  
-    const fetchData = () => {
-      db.collection("roomStatus").get().then((queryRoom) => {
-        queryRoom.forEach(element => {
-          var data = element.data();
-          setRoom(arr => [...arr, data]);
-        })
-      })
-  
-      db.collection("tenant").get().then((queryTenant) => {
-        queryTenant.forEach(element => {
-          var data = element.data();
-          setData(arr => [...arr , data]);
-        });
-      })
-    };
-  
-    useEffect(() => {
-      fetchData();
-    }, []);
+	const { id } = useParams();
+	const [data, setData] = useState([]);
+	const [room, setRoom] = useState([]);
 
-    
-    let obj = tList.find(x => x.RoomID === id);
+	// map data and room array into 1 array
+	let tList = data.map((e) => {
+		for (let element of room) {
+			if (e.RoomID == element.RoomID) Object.assign(e, element);
+		}
+		return e;
+	});
+
+	// Sort tList based on RoomID
+	tList.sort(function (a, b) {
+		return parseInt(a.RoomID) - parseInt(b.RoomID);
+	});
+
+	const fetchData = () => {
+		db.collection('roomStatus')
+			.get()
+			.then((queryRoom) => {
+				queryRoom.forEach((element) => {
+					var data = element.data();
+					setRoom((arr) => [...arr, data]);
+				});
+			});
+
+		db.collection('tenant')
+			.get()
+			.then((queryTenant) => {
+				queryTenant.forEach((element) => {
+					var data = element.data();
+					setData((arr) => [...arr, data]);
+				});
+			});
+	};
+
+	useEffect(() => {
+		fetchData();
+	}, []);
+
+	let obj = tList.find((x) => x.RoomID === id);
 
 	if (obj != null)
 		if (obj.status === true)
@@ -291,7 +295,6 @@ const TenantInfo = () => {
 					<Container>
 						<Wrapper>
 							<HStack>
-								<LockedStatus>Door status: Locked</LockedStatus>
 								<IconWrapper>
 									<Link
 										to="/control/door"
@@ -305,7 +308,7 @@ const TenantInfo = () => {
 										</WrapIcon>
 									</Link>
 									<Link
-										to = {'/tenants/edit/' + id}
+										to={'/tenants/edit/' + id}
 										style={{
 											color: 'inherit',
 											textDecoration: 'inherit',
@@ -316,7 +319,7 @@ const TenantInfo = () => {
 										</WrapIcon>
 									</Link>
 									<Link
-										to="/"
+										to="/Tenants"
 										style={{
 											color: 'inherit',
 											textDecoration: 'inherit',
@@ -335,9 +338,7 @@ const TenantInfo = () => {
 									<InfoContainer>
 										<Info>
 											<Text>Name: &nbsp; </Text>
-											<NormalText>
-												{obj.name}
-											</NormalText>
+											<NormalText>{obj.name}</NormalText>
 										</Info>
 										<Info>
 											<Text>Gender: &nbsp; </Text>
@@ -345,7 +346,13 @@ const TenantInfo = () => {
 										</Info>
 										<Info>
 											<Text>Date of Birth: &nbsp; </Text>
-											<NormalText>{obj.bday.toDate().toDateString().slice(4).replace(/ /g, '-')}</NormalText>
+											<NormalText>
+												{obj.bday
+													.toDate()
+													.toDateString()
+													.slice(4)
+													.replace(/ /g, '-')}
+											</NormalText>
 										</Info>
 										<Info>
 											<Text>National ID: &nbsp; </Text>
@@ -370,13 +377,21 @@ const TenantInfo = () => {
 									</InfoStatus>
 									<InfoStatus>
 										<Text>Payment</Text>
-										<NormalText>{obj.rentCost.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")} VND</NormalText>
+										<NormalText>
+											{obj.rentCost
+												.toString()
+												.replace(
+													/(\d)(?=(\d\d\d)+(?!\d))/g,
+													'$1.'
+												)}{' '}
+											VND
+										</NormalText>
 									</InfoStatus>
 								</InfoStack>
 							</InfoWrapper>
 						</Wrapper>
 					</Container>
-					<Footer/>
+					<Footer />
 				</>
 			);
 		else
@@ -386,9 +401,6 @@ const TenantInfo = () => {
 					<Container>
 						<NotInRoomWrapper>
 							<HStack>
-								<UnLockedStatus>
-									Door status: Unlocked
-								</UnLockedStatus>
 								<IconWrapper>
 									<Link
 										to="/control/door"
@@ -402,7 +414,7 @@ const TenantInfo = () => {
 										</WrapIcon>
 									</Link>
 									<Link
-										to = {'/tenants/edit/' + id}
+										to={'/tenants/edit/' + id}
 										style={{
 											color: 'inherit',
 											textDecoration: 'inherit',
@@ -413,7 +425,7 @@ const TenantInfo = () => {
 										</WrapIcon>
 									</Link>
 									<Link
-										to="/"
+										to="/Tenants"
 										style={{
 											color: 'inherit',
 											textDecoration: 'inherit',
@@ -432,9 +444,7 @@ const TenantInfo = () => {
 									<InfoContainer>
 										<Info>
 											<Text>Name: &nbsp; </Text>
-											<NormalText>
-												{obj.name}
-											</NormalText>
+											<NormalText>{obj.name}</NormalText>
 										</Info>
 										<Info>
 											<Text>Gender: &nbsp; </Text>
@@ -442,7 +452,13 @@ const TenantInfo = () => {
 										</Info>
 										<Info>
 											<Text>Date of Birth: &nbsp; </Text>
-											<NormalText>{obj.bday.toDate().toDateString().slice(4).replace(/ /g, '-')}</NormalText>
+											<NormalText>
+												{obj.bday
+													.toDate()
+													.toDateString()
+													.slice(4)
+													.replace(/ /g, '-')}
+											</NormalText>
 										</Info>
 										<Info>
 											<Text>National ID: &nbsp; </Text>
@@ -467,24 +483,35 @@ const TenantInfo = () => {
 									</InfoStatus>
 									<InfoStatus>
 										<Text>Payment</Text>
-										<NormalText>{obj.rentCost.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")} VND</NormalText>
+										<NormalText>
+											{obj.rentCost
+												.toString()
+												.replace(
+													/(\d)(?=(\d\d\d)+(?!\d))/g,
+													'$1.'
+												)}{' '}
+											VND
+										</NormalText>
 									</InfoStatus>
 								</InfoStack>
 							</InfoWrapper>
 						</NotInRoomWrapper>
 					</Container>
-					<Footer/>
+					<Footer />
 				</>
 			);
 	else
-		return(
-			<div className = "tenant-info">
-				<Navbar/>
+		return (
+			<div className="tenant-info">
+				<Navbar />
 				<Display>
-					<LoadingGif src = {"../resource/loading.gif"} alt = {"Loading"}/>
+					<LoadingGif
+						src={'../resource/loading.gif'}
+						alt={'Loading'}
+					/>
 				</Display>
-			</div> 
-		)
+			</div>
+		);
 };
 
 export default TenantInfo;
