@@ -14,14 +14,12 @@ const LogList = () => {
 
     useEffect(() => {
         db.collection("doorLog").orderBy("time", "desc").get().then((queryLog) => {
-            const current = [];
             queryLog.forEach(element => {
                 var data = element.data();
-                current.push(data);
+                setLog(arr => [...arr, data]);
             })
-            setLog(current);
         })
-    }, [log]);
+    }, []);
 
     const valueList = (
         log? (<Container>
