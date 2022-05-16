@@ -57,7 +57,9 @@ const Icon = styled.img`
 
 const Door = () => { 
     const [status, setStatus] = useState("CLOSE");
-	const [rf, setRfid] = useState("N/A");
+	const [openPos, setOpenPos] = useState("N/A");
+	const [rfidIn, setRfidIn] = useState("N/A");
+	const [rfidOut, setRfidOut] = useState("N/A");
 
 	const doorInteract = (inp) => {
 		// Receive and save log
@@ -67,11 +69,12 @@ const Door = () => {
 		db.collection("doorLog").add({
 			status: status,		
 			time: d,
-			user: inp
+			user: inp,
+			openFrom: openPos
 		})
 		.then((docRef) => {
 			console.log("Added successfully");
-			setRfid(inp);
+			window.location.reload();
 		})
 		.catch((error) => {
 			console.log("error adding :", error);
@@ -81,17 +84,30 @@ const Door = () => {
 	useEffect(() => {
         rtdb.ref("/doorStat/status").on('value', (snapshot) => {
 			const data = snapshot.val();
-			setStatus(data)
+			setStatus(data);
 		});
 
-		rtdb.ref("washingMachineStat/washingMachine1/rfid").on('value', (snapshot) => {
-			const data = snapshot.val();
-			setRfid(data);
+		rtdb.ref("/doorStat/openFrom").on('value', (snapshot) => {
+			const openFrom = snapshot.val();
+			setOpenPos(openFrom);
 		});
-		if (status === 'OPEN' && rf !== "N/A"){
-			doorInteract(rf);
+
+		rtdb.ref("doorStat/rfidIN").on('value', (snapshot) => {
+			const rfIn = snapshot.val();
+			setRfidIn(rfIn);
+		});
+
+		rtdb.ref("doorStat/rfidOUT").on('value', (snapshot) => {
+			const rfOut = snapshot.val();
+			setRfidOut(rfOut);
+		});
+
+		if (status === 'OPEN' && rfidIn !== "N/A" && rfidOut !== "N/A"){
+			if (openPos === "IN")
+				doorInteract(rfidIn);
+			else if (openPos === "OUT")
+				doorInteract(rfidOut);
 		}
-		console.log("Current RFID = ", rf)
     }, [status]);
 
 	if (status === 'OPEN')
@@ -101,7 +117,7 @@ const Door = () => {
 					style={{'background-image': 'linear-gradient(to right,#44C16F 0%,#50D665 51%,#4AD4CC 100%)'}}
 					>
 						<Info />
-						<Icon src="https://static.thenounproject.com/png/3549086-200.png" />
+						<Icon src="https://static.thenounproject.com/png/1378886-200.png" />
 						<Name>{status}</Name>
 				</TenantInfo>
 			</Container> 

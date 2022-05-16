@@ -54,33 +54,26 @@ const Log = ({ item }) => {
         date.setSeconds(sec); // specify value for SECONDS here
         return date.toString();
     }
+
+	const displayPos = (pos) => {return pos === "IN" ? "Inside" : "Outside";}
+
+	const displayTime = () => {
+		var time = getCurrentTime(item.time.seconds);
+		return time.replace("GMT+0700 (Indochina Time)", "");
+	}
     
-    if (item.status === 'OPEN')
-        return (
-            <Container>
-                <TenantInfo
-                    style={{
-                        'background-image':
-                            'linear-gradient(to right,#44C16F 0%,#50D665 51%,#4AD4CC 100%)',
-                    }}>
-                    <Info />
-                    <Name>{item.status} - by {item.user} - at time {getCurrentTime(item.time.seconds)}</Name>
-                </TenantInfo>
-            </Container>
-        );
-    else
-        return (
-            <Container>
-                <TenantInfo
-                    style={{
-						'background-image':
-							'linear-gradient(to right,#FB9393 0%,#FBB993 51%,#FD4646 100%)',
-					}}>
-                    <Info />
-                    <Name>{item.status} - by {item.user} - at time {getCurrentTime(item.time.seconds)}</Name>
-                </TenantInfo>
-            </Container>
-        );
+	return (
+		<Container>
+			<TenantInfo
+				style={{
+					'background-image':
+						'linear-gradient(to right,#44C16F 0%,#50D665 51%,#4AD4CC 100%)',
+				}}>
+				<Info />
+				<Name>OPENED by RFID {item.user} - from {displayPos(item.openFrom)} - at {displayTime()}</Name>
+			</TenantInfo>
+		</Container>
+	);
 };
 
 export default Log;
