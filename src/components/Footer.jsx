@@ -33,6 +33,7 @@ const Button = styled.button`
 		color: #fff;
 		text-decoration: none;
 		box-shadow: 0 0px 30px 0 rgba(65, 132, 234, 1);
+	}
 	box-sizing: border-box;
 `;
 

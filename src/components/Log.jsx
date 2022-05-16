@@ -60,16 +60,19 @@ const NormalText = styled.h4`
 const Log = ({ item }) => {
 	const getCurrentTime = (sec) => {
 		var date = new Date(null);
-		date.setSeconds(sec); // specify value for SECONDS here
+
+		// specify value for SECONDS here
+		// Convert from GMT +0800 to GMT +0700 for some reason
+		date.setSeconds(sec - 3600); 
 		return date.toString();
 	};
 
-	const displayPos = (pos) => {
-		return pos === 'IN' ? 'Inside' : 'Outside';
+	const displayPos = () => {
+		return item.openFrom === 'IN' ? 'Inside' : 'Outside';
 	};
 
 	const displayTime = () => {
-		var time = getCurrentTime(item.time.seconds);
+		var time = getCurrentTime(item.time.seconds); 
 		return time
 			.replace('GMT+0700 (Indochina Time)', '')
 			.replace('GMT+0700 (+07)', '');
@@ -84,7 +87,7 @@ const Log = ({ item }) => {
 				</InfoStatus>
 				<InfoStatus>
 					<Text>From</Text>
-					<NormalText>{displayPos(item.openFrom)}</NormalText>
+					<NormalText>{displayPos()}</NormalText>
 				</InfoStatus>
 				<InfoStatus style={{ flex: '1.5' }}>
 					<Text>At</Text>
