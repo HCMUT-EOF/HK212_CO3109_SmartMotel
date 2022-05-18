@@ -4,7 +4,6 @@ import { mobile } from '../responsive';
 import Footer from '../components/Footer';
 import Door from '../components/Door';
 import LogList from '../components/LogList';
-import TenantDisplay from '../components/TenantDisplay';
 import Navbar from '../components/Navbar';
 
 const Display = styled.div`
@@ -19,18 +18,22 @@ const Container = styled.div`
 `;
 
 const Tenant = () => {
-	return (
-		<Container>
-			<Navbar />
-			<Display>
-				<Door />
-			</Display>
-			<Display>
-				<LogList />
-			</Display>
-			<Footer />
-		</Container>
-	);
+	if (localStorage.getItem('token') === '123')
+		return (
+			<Container>
+				<Navbar />
+				<Display>
+					<Door />
+				</Display>
+				<Display>
+					<LogList />
+				</Display>
+				<Footer />
+			</Container>
+		);
+	else{
+		window.location = "/user/login";
+	}
 };
 
 export default Tenant;

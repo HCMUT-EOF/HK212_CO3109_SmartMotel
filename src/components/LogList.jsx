@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import Log from './Log';
 import { useState, useEffect } from 'react';
 import { db } from '../firebase';
+
 const Title = styled.h2`
 	font-size: 26px;
 	font-weight: 700;

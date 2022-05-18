@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { auth } from '../firebase';
+import { useState } from 'react';
+import swal from 'sweetalert';
 
 const Container = styled.div`
 	width: 100vw;
@@ -121,6 +124,7 @@ const Button = styled.button`
 		color: #fff;
 		text-decoration: none;
 		box-shadow: 0 0px 30px 0 rgba(65, 132, 234, 1);
+	}
 	box-sizing: border-box;
 `;
 const ForgotPassword = styled.a`
@@ -135,55 +139,86 @@ const ForgotPassword = styled.a`
 `;
 
 const Login = () => {
-	return (
-		<>
-			<Container>
-				<LogoContainer>
-					<Link
-						style={{
-							textDecoration: 'none',
-							display: 'flex',
-							alignItems: 'center',
-							gap: '10px',
-						}}
-						to="/">
-						<HomeIcon src="https://i.ibb.co/MSLMYGg/home-4-512.png"></HomeIcon>
-						<HomeLabel>
-							SMART <br></br> MOTEL
-						</HomeLabel>
-					</Link>
-				</LogoContainer>
-				<Wrapper>
-					<FormWrapper>
-						<Title>SIGN IN</Title>
-						<Form>
-							<InputContainer>
-								<Label>Email address</Label>
-								<Input
-									type="email"
-									placeholder="Enter email"
-									autoFocus
-								/>
-							</InputContainer>
-							<InputContainer>
-								<Label>Password</Label>
-								<Input
-									type="password"
-									placeholder="Enter password"
-								/>
-								<ForgotPassword>
-									Forgot password?
-								</ForgotPassword>
-							</InputContainer>
-							<Link to="/">
-								<Button>Sign in</Button>
-							</Link>
-						</Form>
-					</FormWrapper>
-				</Wrapper>
-			</Container>
-		</>
-	);
+	const [email, setEmail] = useState("");
+	const [pw, setPw] = useState("");
+
+	const handleLogin = async (e) => {
+		e.preventDefault();
+
+		auth.signInWithEmailAndPassword(email, pw)
+		.then((userCredential) => {
+			swal({
+				title: 'Login success!',
+				icon: 'success'
+			})
+			.then(function(){
+				localStorage.setItem('token', 123);
+				window.location = "/";
+			})
+		})
+		.catch((error) => {
+			swal({
+				title: 'Something went wrong!',
+				icon: 'warning',
+				text: error.code + ": " + error.message,
+				dangerMode: true,
+			});
+		});
+	}
+
+	if (localStorage.getItem('token') !== '123')
+		return (
+			<>
+				<Container>
+					<LogoContainer>
+						<Link
+							style={{
+								textDecoration: 'none',
+								display: 'flex',
+								alignItems: 'center',
+								gap: '10px',
+							}}
+							to="/">
+							<HomeIcon src="https://i.ibb.co/MSLMYGg/home-4-512.png"></HomeIcon>
+							<HomeLabel>
+								SMART <br></br> MOTEL
+							</HomeLabel>
+						</Link>
+					</LogoContainer>
+					<Wrapper>
+						<FormWrapper>
+							<Title>SIGN IN</Title>
+							<Form onSubmit = {handleLogin}>
+								<InputContainer>
+									<Label>Email address</Label>
+									<Input
+										type="email"
+										placeholder="Enter email"
+										onChange={(e) => setEmail(e.target.value)}
+										autoFocus
+									/>
+								</InputContainer>
+								<InputContainer>
+									<Label>Password</Label>
+									<Input
+										type="password"
+										placeholder="Enter password"
+										onChange={(e) => setPw(e.target.value)}
+									/>
+									<ForgotPassword>
+										Forgot password?
+									</ForgotPassword>
+								</InputContainer>
+								<Button>Sign in</Button>	
+							</Form>
+						</FormWrapper>
+					</Wrapper>
+				</Container>
+			</>
+		);
+	else{
+		window.location = "/";
+	}
 };
 
 export default Login;

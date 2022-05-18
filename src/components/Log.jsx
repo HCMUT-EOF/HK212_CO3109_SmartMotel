@@ -1,9 +1,4 @@
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
-import Navbar from '../components/Navbar';
-import { db } from '../firebase';
-import { Link } from 'react-router-dom';
-import { mobile } from '../responsive';
 
 const InfoStatus = styled.div`
 	border: 0;

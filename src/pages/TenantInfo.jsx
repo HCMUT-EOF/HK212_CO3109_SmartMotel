@@ -297,28 +297,6 @@ const TenantInfo = () => {
 							<HStack>
 								<IconWrapper>
 									<Link
-										to="/control/door"
-										style={{
-											color: 'inherit',
-											textDecoration: 'inherit',
-										}}>
-										<WrapIcon>
-											<HistoryIcon></HistoryIcon>
-											<InviLabel>History</InviLabel>
-										</WrapIcon>
-									</Link>
-									<Link
-										to={'/tenants/edit/' + id}
-										style={{
-											color: 'inherit',
-											textDecoration: 'inherit',
-										}}>
-										<WrapIcon>
-											<EditIcon></EditIcon>
-											<InviLabel>Edit info</InviLabel>
-										</WrapIcon>
-									</Link>
-									<Link
 										to="/Tenants"
 										style={{
 											color: 'inherit',

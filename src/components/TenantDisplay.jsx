@@ -76,8 +76,6 @@ const TenantDisplay = () => {
 		fetchData();
 	}, []);
 
-	console.log('tList = ', tList);
-
 	const valueList = tList ? (
 		<>
 			{tList.map((item) => (
