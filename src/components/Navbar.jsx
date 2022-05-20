@@ -204,6 +204,31 @@ const MenuItem = styled.div`
 `;
 
 const Banner = () => {
+	const handleLogOut = () => {
+		swal({
+			title: 'Confirmation',
+			text: 'Are you sure to log out?',
+			icon: 'warning',
+			buttons: [
+				'Abort!',
+				'Proceed!'
+			],
+			dangerMode: true,
+		})
+		.then(function(isConfirm) {
+			if (isConfirm) 
+				swal({
+					title: 'Logout success!',
+					text: 'You have successfully logged out!',
+					icon: 'success'
+				})
+				.then(function() {
+					localStorage.removeItem('token');
+					window.location = "/user/login";
+				});
+		})
+	}
+	
 	return (
 		<Container>
 			<Wrapper>
@@ -224,7 +249,7 @@ const Banner = () => {
 				</Left>
 
 				<Right>
-					<MenuItem>WELCOME BACK, THANH</MenuItem>
+					<MenuItem>WELCOME BACK</MenuItem>
 					<Link
 						to="/Tenants"
 						style={{ color: 'inherit', textDecoration: 'inherit' }}>
@@ -245,11 +270,9 @@ const Banner = () => {
 							</WrapIcon>
 						</MenuItem>
 					</Link>
-					<Link to="/user/login">
-						<MenuItem>
-							<SignOutButton>SIGN OUT</SignOutButton>
-						</MenuItem>
-					</Link>
+					<MenuItem>
+						<SignOutButton onClick={() => handleLogOut()}>SIGN OUT</SignOutButton>
+					</MenuItem>
 				</Right>
 			</Wrapper>
 		</Container>

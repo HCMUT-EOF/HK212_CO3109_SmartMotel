@@ -1,3 +1,5 @@
+// Web version 8 (namespaced)
+
 import firebase from 'firebase';
 import "firebase/firestore";
 
@@ -19,5 +21,6 @@ if (!firebase.apps.length) {
 
 export const db = firebase.firestore();
 export const rtdb = firebase.database();
+export const auth = firebase.auth();
 
 export default firebase;
