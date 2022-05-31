@@ -53,63 +53,67 @@ const MemberName = styled.text`
 `
 
 const AboutUs = () => {
-    return (
-        <Container>
-            <Navbar/>
-            <Introduction>
-                <h1>Who are we? Meet our team!</h1>
-                We listen, we disscuss and we develop. We love to learn and use the lastest technologies.
-            </Introduction>
+    if (localStorage.getItem('token') === '123')
+        return (
+            <Container>
+                <Navbar/>
+                <Introduction>
+                    <h1>Who are we? Meet our team!</h1>
+                    We listen, we disscuss and we develop. We love to learn and use the lastest technologies.
+                </Introduction>
 
-            <TeamMember>
-                <Member>
-                    <MemberImg src = {"resource/Members/Viet_1953097.png"} alt = {"VietImg"} />
-                    <MemberName>
-                        Tran Quoc Viet <br/>
-                        Student ID: 1953097
-                    </MemberName>
-                    Front-end Developer
-                </Member>
+                <TeamMember>
+                    <Member>
+                        <MemberImg src = {"resource/Members/Viet_1953097.png"} alt = {"VietImg"} />
+                        <MemberName>
+                            Tran Quoc Viet <br/>
+                            Student ID: 1953097
+                        </MemberName>
+                        Front-end Developer
+                    </Member>
 
-                <Member>
-                    <MemberImg src = {"resource/Members/Cat_1952587.jpg"} alt = {"CatImg"} />
-                    <MemberName>
-                        Nguyen Hoang Cat <br/>
-                        Student ID: 1952587
-                    </MemberName>
-                    Back-end Developer 
-                </Member>
+                    <Member>
+                        <MemberImg src = {"resource/Members/Cat_1952587.jpg"} alt = {"CatImg"} />
+                        <MemberName>
+                            Nguyen Hoang Cat <br/>
+                            Student ID: 1952587
+                        </MemberName>
+                        Back-end Developer 
+                    </Member>
 
-                <Member>
-                    <MemberImg src = {"resource/Members/Duyen_1952620.jpg"} alt = {"HungImg"} />
-                    <MemberName>
-                        Luong Duy Hung <br/>
-                        Student ID: 1952747
-                    </MemberName>
-                    Back-end Developer 
-                </Member>
+                    <Member>
+                        <MemberImg src = {"resource/Members/Hung_1952747.jpg"} alt = {"HungImg"} />
+                        <MemberName>
+                            Luong Duy Hung <br/>
+                            Student ID: 1952747
+                        </MemberName>
+                        Back-end Developer 
+                    </Member>
 
-                <Member>
-                    <MemberImg src = {"resource/Members/Thanh_1952983.png"} alt = {"ThanhImg"} />
-                    <MemberName>
-                        Nguyen Duc Thanh <br/>
-                        Student ID: 1952983
-                    </MemberName>
-                    Front-end Developer 
-                </Member>
+                    <Member>
+                        <MemberImg src = {"resource/Members/Thanh_1952983.png"} alt = {"ThanhImg"} />
+                        <MemberName>
+                            Nguyen Duc Thanh <br/>
+                            Student ID: 1952983
+                        </MemberName>
+                        Front-end Developer 
+                    </Member>
 
-                <Member>
-                    <MemberImg src = {"resource/Members/Phong_1952916.png"} alt = {"DatImg"} />
-                    <MemberName>
-                        Cao Tien Dat <br/>
-                        Student ID: 2052434
-                    </MemberName>
-                    System Engineer
-                </Member>
-            </TeamMember>
-            <br/>
-        </Container>
-    );
+                    <Member>
+                        <MemberImg src = {"resource/Members/Dat_2052434.png"} alt = {"DatImg"} />
+                        <MemberName>
+                            Cao Tien Dat <br/>
+                            Student ID: 2052434
+                        </MemberName>
+                        System Engineer
+                    </Member>
+                </TeamMember>
+                <br/>
+            </Container>
+        );
+    else{
+        window.location = "/user/login";
+    }
 };
 
 export default AboutUs;

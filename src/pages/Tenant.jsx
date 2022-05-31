@@ -14,15 +14,19 @@ const Display = styled.div`
 `;
 
 const Tenant = () => {
-	return (
-		<div>
-			<Navbar />
-			<Display>
-				<TenantDisplay />
-			</Display>
-			<Footer />
-		</div>
-	);
+	if (localStorage.getItem('token') === '123')
+		return (
+			<div>
+				<Navbar />
+				<Display>
+					<TenantDisplay />
+				</Display>
+				<Footer />
+			</div>
+		);
+	else{
+        window.location = "/user/login";
+    }
 };
 
 export default Tenant;

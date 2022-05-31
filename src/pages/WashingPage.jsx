@@ -1,7 +1,9 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { mobile } from '../responsive';
-import WashingMachine from '../components/WashingMachine';
+import InUseWashingMachine from '../components/InUseWashingMachine';
+import IdleWashingMachine from '../components/IdleWashingMachine';
+import { useState, useEffect } from 'react';
+import { rtdb } from '../firebase';
 
 import Navbar from '../components/Navbar';
 const Wrapper = styled.div`
@@ -14,14 +16,39 @@ const Wrapper = styled.div`
 `;
 
 const WashingPage = () => {
-	return (
-		<div>
-			<Navbar />
-			<Wrapper>
-				<WashingMachine />
-			</Wrapper>
-		</div>
-	);
+	const [status, setStatus] = useState("NA");
+	const [user, setUser] = useState("NA")
+
+	useEffect(() => {
+        rtdb.ref("/washingMachineStat/washingMachine1").on('value', (snapshot) => {
+			setStatus(snapshot.val().status);
+			setUser(snapshot.val().rfid)
+		});	
+    }, []);
+	
+	if (localStorage.getItem('token') === '123'){
+		if (status === 'BUSY')
+			return (
+				<div>
+					<Navbar />
+					<Wrapper>
+						<InUseWashingMachine item = {user}/>
+					</Wrapper>
+				</div>
+			);
+		else
+			return (
+				<div>
+					<Navbar />
+					<Wrapper>
+						<IdleWashingMachine/>
+					</Wrapper>
+				</div>
+			);	
+	}
+	else{
+        window.location = "/user/login";
+    }
 };
 
 export default WashingPage;
