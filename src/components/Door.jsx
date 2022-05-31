@@ -63,24 +63,12 @@ const Door = () => {
 	};
 
 	useEffect(() => {
-		rtdb.ref('/doorStat/status').on('value', (snapshot) => {
-			const data = snapshot.val();
-			setStatus(data);
-		});
-
-		rtdb.ref('/doorStat/openFrom').on('value', (snapshot) => {
-			const openFrom = snapshot.val();
-			setOpenPos(openFrom);
-		});
-
-		rtdb.ref('doorStat/rfidIN').on('value', (snapshot) => {
-			const rfIn = snapshot.val();
-			setRfidIn(rfIn);
-		});
-
-		rtdb.ref('doorStat/rfidOUT').on('value', (snapshot) => {
-			const rfOut = snapshot.val();
-			setRfidOut(rfOut);
+		rtdb.ref('/doorStat').on('value', (snapshot) => {
+			setStatus(snapshot.val().status);
+			setOpenPos(snapshot.val().openFrom);
+			setRfidIn(snapshot.val().rfidIN);
+			setRfidOut(snapshot.val().rfidOUT);
+			//console.log("Fetched from RTDB: ",snapshot.val())
 		});
 
 		if (status === 'OPEN' && rfidIn !== 'N/A' && rfidOut !== 'N/A') {

@@ -1,6 +1,6 @@
 import styled, { keyframes } from 'styled-components';
-import { rtdb, db } from '../firebase';
 import React, { useState, useEffect } from 'react';
+import Timer from './Timer';
 
 const Wrapper = styled.div`
 	width: 45%;
@@ -50,40 +50,20 @@ const Text = styled.h2`
 	text-transform: uppercase;
 `;
 
-const WashingMachine = () => {
-	const [status, setStatus] = useState("NA");
-	const [user, setUser] = useState("NA")
-
-	useEffect(() => {
-        rtdb.ref("/washingMachineStat/washingMachine1").on('value', (snapshot) => {
-			setStatus(snapshot.val().status);
-			setUser(snapshot.val().rfid)
-		});	
-    }, []);
-	
-
-	if (status === 'BUSY')
-		return (
-			<Wrapper>
-				<WashingImage src="https://svgur.com/i/gLd.svg"></WashingImage>
-				<WashingInfo>
-					<Title>Washing Machine</Title>
-					<Status>Status: {status}</Status>
-					<Text>User: {user}</Text>
-					<Text>Elapsed Time: </Text>
-				</WashingInfo>
-			</Wrapper>
-		);
-	else
-		return (
-			<Wrapper>
-				<WashingImage src="https://svgur.com/i/gLe.svg"></WashingImage>
-				<WashingInfo>
-					<Title>Washing Machine</Title>
-					<Status>Status: {status}</Status>
-				</WashingInfo>
-			</Wrapper>
-		);
+const InUseWashingMachine = (user) => {
+	return (
+		<Wrapper>
+			<WashingImage src={"/resource/laundry-washer-svgrepo-com.svg"} alt = {"InUse"}></WashingImage>
+			<WashingInfo>
+				<Title>Washing Machine</Title>
+				<Status>Status: IN USE</Status>
+				<Text>User: {user.item}</Text>
+				{/* <Text>
+					Elapsed Time: <Timer /> 
+				</Text> */}
+			</WashingInfo>
+		</Wrapper>
+	);
 };
 
-export default WashingMachine;
+export default InUseWashingMachine;

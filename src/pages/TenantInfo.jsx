@@ -14,6 +14,7 @@ const Container = styled.div`
 	justify-content: center;
 	height: 100vh;
 `;
+
 const HStack = styled.div`
 	display: flex;
 	align-items: center;
@@ -287,8 +288,8 @@ const TenantInfo = () => {
 
 	let obj = tList.find((x) => x.RoomID === id);
 
-	if (obj != null)
-		if (obj.status === true)
+	if (localStorage.getItem('token') === '123'){
+		if (obj != null)
 			return (
 				<>
 					<Navbar></Navbar>
@@ -372,112 +373,6 @@ const TenantInfo = () => {
 					<Footer />
 				</>
 			);
-		else
-			return (
-				<>
-					<Navbar></Navbar>
-					<Container>
-						<NotInRoomWrapper>
-							<HStack>
-								<IconWrapper>
-									<Link
-										to="/control/door"
-										style={{
-											color: 'inherit',
-											textDecoration: 'inherit',
-										}}>
-										<WrapIcon>
-											<HistoryIcon></HistoryIcon>
-											<InviLabel>History</InviLabel>
-										</WrapIcon>
-									</Link>
-									<Link
-										to={'/tenants/edit/' + id}
-										style={{
-											color: 'inherit',
-											textDecoration: 'inherit',
-										}}>
-										<WrapIcon>
-											<EditIcon></EditIcon>
-											<InviLabel>Edit info</InviLabel>
-										</WrapIcon>
-									</Link>
-									<Link
-										to="/Tenants"
-										style={{
-											color: 'inherit',
-											textDecoration: 'inherit',
-										}}>
-										<WrapIcon>
-											<BackIcon></BackIcon>
-											<InviLabel>Back</InviLabel>
-										</WrapIcon>
-									</Link>
-								</IconWrapper>
-							</HStack>
-							<InfoWrapper>
-								<Title>Tenant's information</Title>
-								<Wrapper1>
-									<Avatar src="https://svgur.com/i/gMR.svg"></Avatar>
-									<InfoContainer>
-										<Info>
-											<Text>Name: &nbsp; </Text>
-											<NormalText>{obj.name}</NormalText>
-										</Info>
-										<Info>
-											<Text>Gender: &nbsp; </Text>
-											<NormalText>Male</NormalText>
-										</Info>
-										<Info>
-											<Text>Date of Birth: &nbsp; </Text>
-											<NormalText>
-												{obj.bday
-													.toDate()
-													.toDateString()
-													.slice(4)
-													.replace(/ /g, '-')}
-											</NormalText>
-										</Info>
-										<Info>
-											<Text>National ID: &nbsp; </Text>
-											<NormalText>312482081</NormalText>
-										</Info>
-									</InfoContainer>
-								</Wrapper1>
-								<InfoStack>
-									<InfoStatus>
-										<Text>Water consumed </Text>
-										<NormalText>100 litres</NormalText>
-									</InfoStatus>
-									<InfoStatus>
-										<Text>Laundry used </Text>
-										<NormalText>50 times</NormalText>
-									</InfoStatus>
-								</InfoStack>
-								<InfoStack>
-									<InfoStatus>
-										<Text>Door interacting</Text>
-										<NormalText>50 times</NormalText>
-									</InfoStatus>
-									<InfoStatus>
-										<Text>Payment</Text>
-										<NormalText>
-											{obj.rentCost
-												.toString()
-												.replace(
-													/(\d)(?=(\d\d\d)+(?!\d))/g,
-													'$1.'
-												)}{' '}
-											VND
-										</NormalText>
-									</InfoStatus>
-								</InfoStack>
-							</InfoWrapper>
-						</NotInRoomWrapper>
-					</Container>
-					<Footer />
-				</>
-			);
 	else
 		return (
 			<div className="tenant-info">
@@ -490,6 +385,10 @@ const TenantInfo = () => {
 				</Display>
 			</div>
 		);
+	}
+	else{
+		window.location = "/user/login";
+	}
 };
 
 export default TenantInfo;
